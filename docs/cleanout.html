@@ -42,35 +42,55 @@
             font-family: var(--font-condensed);
         }
 
+        /* === 외부 래퍼 (그림자/글로우용) === */
+        .scorebug-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
         /* === 메인 프레임 === */
         .scorebug-frame {
             display: flex; flex-direction: row; width: fit-content;
             border: 4px solid #2a2a2a;
-            box-shadow: 0 0 0 1px #000, inset 0 1px 0px rgba(255,255,255,0.6), inset 0 -1px 0px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,1);
-            border-radius: 12px; overflow: hidden; background: #000;
+            box-shadow:
+                0 0 0 1px #000,
+                inset 0 1px 0px rgba(255,255,255,0.6),
+                inset 0 -1px 0px rgba(0,0,0,0.8),
+                0 8px 25px rgba(0,0,0,0.9),
+                0 20px 60px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
             position: relative; z-index: 10;
             opacity: 0; transform: scale(0.7);
-            clip-path: inset(0 0 0 0);
+            clip-path: inset(0 0 0 0 round 12px);
             will-change: transform, opacity, clip-path;
             transition: opacity 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), clip-path 0.4s var(--ease-smooth-crash);
-            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.8)) drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+            /* 안티앨리어싱 개선 */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
         .scorebug-frame.visible { opacity: 1; transform: scale(1); transition: opacity 0.1s, transform 0.5s var(--ease-elastic); }
-        .scorebug-frame.seq-close { clip-path: inset(0 50% 0 50%); opacity: 0; transition: clip-path 0.4s var(--ease-smooth-crash), opacity 0.3s ease-out; }
+        .scorebug-frame.seq-close { clip-path: inset(0 50% 0 50% round 12px); opacity: 0; transition: clip-path 0.4s var(--ease-smooth-crash), opacity 0.3s ease-out; }
         .scorebug-frame.seq-final-hide { opacity: 0 !important; transform: scale(0.9) !important; transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
 
         /* FX Layers */
-        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 12px; }
+        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 8px; overflow: hidden; }
         .fx-noise { z-index: 55; mix-blend-mode: overlay; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
         .fx-shimmer { z-index: 900; opacity: 0; top: 0; left: -150%; width: 150%; height: 100%; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.2) 50%, transparent 60%); transform: skewX(-20deg); filter: blur(3px); }
         .fx-anamorphic-flare { z-index: 950; opacity: 0; mix-blend-mode: screen; top: 0; left: 50%; width: 0%; height: 100%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
         .fx-anamorphic-flare::before { content: ''; width: 100%; height: 4px; background: linear-gradient(90deg, transparent, rgba(200, 230, 255, 0.9), #fff, rgba(200, 230, 255, 0.9), transparent); box-shadow: 0 0 30px rgba(0, 180, 255, 0.8); }
         .fx-flash { z-index: 999; mix-blend-mode: overlay; background: white; opacity: 0; }
-        .fx-outline-light { z-index: 850; opacity: 0; mix-blend-mode: screen; border: 4px solid transparent; }
+        .fx-outline-light { z-index: 850; opacity: 0; mix-blend-mode: screen; border-radius: 8px; }
         .overall-sheen { z-index: 990; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.05) 60%); }
 
         /* Animations */
-        @keyframes outline-flash-intro { 0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } 15% { opacity: 1; box-shadow: inset 0 0 0 4px rgba(220, 255, 255, 1), 0 0 40px rgba(0, 220, 255, 0.8); border-color: rgba(255,255,255,1); } 100% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } }
+        @keyframes outline-flash-intro {
+            0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); }
+            15% { opacity: 1; box-shadow: inset 0 0 0 4px rgba(220, 255, 255, 1), 0 0 40px rgba(0, 220, 255, 0.8); }
+            100% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); }
+        }
         @keyframes shimmer-pass-on { 0% { left: -150%; opacity: 0; } 10% { opacity: 1; } 100% { left: 200%; opacity: 0; } }
         @keyframes flare-expand-on { 0% { width: 0%; opacity: 0; } 10% { opacity: 1; } 40% { width: 180%; opacity: 1; } 100% { width: 180%; opacity: 0; } }
         @keyframes flash-burst-on { 0% { opacity: 0; } 5% { opacity: 0.8; } 100% { opacity: 0; } }
@@ -79,6 +99,12 @@
         @keyframes shimmer-pass-off { 0% { left: 150%; opacity: 0; } 20% { opacity: 0.4; } 100% { left: -100%; opacity: 0; } }
         @keyframes fade-active { 0% { filter: brightness(1); } 50% { filter: brightness(2.5); } 100% { filter: brightness(1); } }
         @keyframes pop-active { 0% { transform: scale(1); filter: brightness(1); } 30% { transform: scale(1.3); filter: brightness(2); } 60% { transform: scale(1.1); filter: brightness(1.5); } 100% { transform: scale(1); filter: brightness(1); } }
+
+        /* Slide Animations (스피드건) */
+        @keyframes slide-base-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @keyframes slide-speed-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes slide-speed-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @keyframes slide-base-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
         .scorebug-frame.visible .fx-outline-light { animation: outline-flash-intro 1.2s ease-out forwards 0.1s; }
         .scorebug-frame.visible .fx-shimmer { animation: shimmer-pass-on 1.5s ease-in-out forwards 0.6s; opacity: 1; }
@@ -188,7 +214,13 @@
         .bases-wrapper { width: 95px; height: 100%; position: relative; z-index: 2; margin-left: 10px; padding: 0; overflow: hidden; }
         .bases-wrapper::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 15; }
 
-        .base-content { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; }
+        .base-content, .speed-content { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; will-change: transform; }
+
+        .speed-content { transform: translateX(100%); background: linear-gradient(to bottom, #ffe033 0%, #e6b800 100%); box-shadow: inset 0 0 5px rgba(255,255,255,0.6); width: 102%; left: -1%; z-index: 20; }
+        .speed-content::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none; z-index: 6; }
+        .speed-text-group { display: flex; align-items: baseline; justify-content: center; position: relative; z-index: 10; }
+        .speed-text { font-family: var(--font-oswald); font-weight: 700; font-size: 26px; color: #000; text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
+        .speed-unit { font-family: var(--font-oswald); font-size: 13px; color: #444; font-weight: 700; margin-left: 2px; }
 
         .field-diamond { position: relative; width: 32px; height: 32px; transform: rotate(45deg); top: 6px; left: 3px; }
         .base-led { position: absolute; width: 12px; height: 12px; background-color: var(--base-off); border: 1px solid #222; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8); transition: all 0.2s; background-image: radial-gradient(rgba(0,0,0,0.5) 30%, transparent 30%); background-size: 5px 5px; }
@@ -197,70 +229,84 @@
         .base-led.first { top: 0; right: 0; border-top-right-radius: 2px; }
         .base-led.third { bottom: 0; left: 0; border-bottom-left-radius: 2px; }
         .base-led.on { background-color: var(--led-base); box-shadow: inset 0 0 5px #fff, 0 0 8px var(--led-base); border-color: #fff; z-index: 10; background-image: radial-gradient(rgba(0,0,0,0.3) 30%, transparent 30%); animation: pop-active 0.3s var(--ease-mechanic); }
+
+        /* 스피드건 슬라이드 애니메이션 */
+        .bases-wrapper.anim-enter .base-content { animation: slide-base-out-left 0.5s var(--ease-slide) forwards; }
+        .bases-wrapper.anim-enter .speed-content { animation: slide-speed-in-right 0.5s var(--ease-slide) forwards; }
+        .bases-wrapper.anim-exit .speed-content { animation: slide-speed-out-left 0.5s var(--ease-slide) forwards; }
+        .bases-wrapper.anim-exit .base-content { animation: slide-base-in-right 0.5s var(--ease-slide) forwards; }
     </style>
 </head>
 <body>
-    <div id="scorebug" class="scorebug-frame">
-        <div class="fx-layer fx-outline-light"></div>
-        <div class="fx-layer fx-noise"></div>
-        <div class="fx-layer fx-shimmer"></div>
-        <div class="fx-layer fx-anamorphic-flare"></div>
-        <div class="fx-layer fx-flash"></div>
-        <div class="fx-layer overall-sheen"></div>
+    <div class="scorebug-wrapper">
+        <div id="scorebug" class="scorebug-frame">
+            <div class="fx-layer fx-outline-light"></div>
+            <div class="fx-layer fx-noise"></div>
+            <div class="fx-layer fx-shimmer"></div>
+            <div class="fx-layer fx-anamorphic-flare"></div>
+            <div class="fx-layer fx-flash"></div>
+            <div class="fx-layer overall-sheen"></div>
 
-        <div class="main-logo-box">
-            <!-- 로고 표시 영역 -->
-        </div>
-
-        <div class="content-column">
-            <div class="row-top">
-                <div class="cell cell-team team-left gel-effect">
-                    <div class="text-mask"><span class="reveal-text" id="team1Name">선공팀</span></div>
-                </div>
-                <div class="cell cell-score">
-                    <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">0</span></div>
-                </div>
-                <div class="cell cell-score">
-                    <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">0</span></div>
-                </div>
-                <div class="cell cell-team team-right gel-effect">
-                    <div class="text-mask"><span class="reveal-text" id="team2Name">후공팀</span></div>
-                </div>
+            <div class="main-logo-box">
+                <!-- 로고 표시 영역 -->
             </div>
 
-            <div class="row-bottom">
-                <div class="title-box">
-                    <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
-                </div>
-                <div class="inning-box-new">
-                    <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
-                    <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">1</span></div>
-                </div>
-                <div class="bso-container">
-                    <div class="bso-group">
-                        <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
-                        <div id="b1" class="led-dot ball"></div>
-                        <div id="b2" class="led-dot ball"></div>
-                        <div id="b3" class="led-dot ball"></div>
+            <div class="content-column">
+                <div class="row-top">
+                    <div class="cell cell-team team-left gel-effect">
+                        <div class="text-mask"><span class="reveal-text" id="team1Name">선공팀</span></div>
                     </div>
-                    <div class="bso-group">
-                        <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
-                        <div id="s1" class="led-dot strike"></div>
-                        <div id="s2" class="led-dot strike"></div>
+                    <div class="cell cell-score">
+                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">0</span></div>
                     </div>
-                    <div class="bso-group">
-                        <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
-                        <div id="o1" class="led-dot out"></div>
-                        <div id="o2" class="led-dot out"></div>
+                    <div class="cell cell-score">
+                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">0</span></div>
+                    </div>
+                    <div class="cell cell-team team-right gel-effect">
+                        <div class="text-mask"><span class="reveal-text" id="team2Name">후공팀</span></div>
                     </div>
                 </div>
 
-                <div class="bases-wrapper">
-                    <div class="base-content">
-                        <div class="field-diamond">
-                            <div id="base2" class="base-led second"></div>
-                            <div id="base1" class="base-led first"></div>
-                            <div id="base3" class="base-led third"></div>
+                <div class="row-bottom">
+                    <div class="title-box">
+                        <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
+                    </div>
+                    <div class="inning-box-new">
+                        <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
+                        <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">1</span></div>
+                    </div>
+                    <div class="bso-container">
+                        <div class="bso-group">
+                            <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
+                            <div id="b1" class="led-dot ball"></div>
+                            <div id="b2" class="led-dot ball"></div>
+                            <div id="b3" class="led-dot ball"></div>
+                        </div>
+                        <div class="bso-group">
+                            <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
+                            <div id="s1" class="led-dot strike"></div>
+                            <div id="s2" class="led-dot strike"></div>
+                        </div>
+                        <div class="bso-group">
+                            <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
+                            <div id="o1" class="led-dot out"></div>
+                            <div id="o2" class="led-dot out"></div>
+                        </div>
+                    </div>
+
+                    <div class="bases-wrapper" id="baseWrapper">
+                        <div class="base-content">
+                            <div class="field-diamond">
+                                <div id="base2" class="base-led second"></div>
+                                <div id="base1" class="base-led first"></div>
+                                <div id="base3" class="base-led third"></div>
+                            </div>
+                        </div>
+                        <div class="speed-content">
+                            <div class="speed-text-group">
+                                <span class="speed-text" id="speedValue">154.0</span>
+                                <span class="speed-unit">km/h</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,6 +316,8 @@
 
     <script>
         const scorebug = document.getElementById('scorebug');
+        const baseWrapper = document.getElementById('baseWrapper');
+        let speedTimer = null;
 
         // === ON/OFF AIR 애니메이션 ===
         function playAnimation(type) {
@@ -288,6 +336,19 @@
             }
         }
 
+        // === 스피드건 표시 ===
+        function showSpeed(val) {
+            baseWrapper.classList.remove('anim-exit');
+            baseWrapper.classList.add('anim-enter');
+            document.getElementById('speedValue').innerText = val;
+
+            if(speedTimer) clearTimeout(speedTimer);
+            speedTimer = setTimeout(() => {
+                baseWrapper.classList.remove('anim-enter');
+                baseWrapper.classList.add('anim-exit');
+            }, 3000);
+        }
+
         // === BroadcastChannel 실시간 수신 ===
         const channel = new BroadcastChannel('scorebug_sync');
 
@@ -300,6 +361,12 @@
                 return;
             } else if (data.action === 'off') {
                 playAnimation('out');
+                return;
+            }
+
+            // 스피드건 연동
+            if (data.action === 'speed' && data.value) {
+                showSpeed(data.value);
                 return;
             }
 
