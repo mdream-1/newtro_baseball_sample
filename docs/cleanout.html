@@ -26,6 +26,8 @@
             --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
             --ease-mechanic: cubic-bezier(0.65, 0.05, 0.36, 1);
             --ease-smooth-crash: cubic-bezier(0.6, 0, 0.1, 1);
+            --ease-flap-fall: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            --ease-flap-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --ease-slide: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -40,6 +42,7 @@
             font-family: var(--font-condensed);
         }
 
+        /* === 메인 프레임 === */
         .scorebug-frame {
             display: flex; flex-direction: row; width: fit-content;
             border: 4px solid #2a2a2a;
@@ -52,6 +55,8 @@
             transition: opacity 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), clip-path 0.4s var(--ease-smooth-crash);
         }
         .scorebug-frame.visible { opacity: 1; transform: scale(1); transition: opacity 0.1s, transform 0.5s var(--ease-elastic); }
+        .scorebug-frame.seq-close { clip-path: inset(0 50% 0 50%); opacity: 0; transition: clip-path 0.4s var(--ease-smooth-crash), opacity 0.3s ease-out; }
+        .scorebug-frame.seq-final-hide { opacity: 0 !important; transform: scale(0.9) !important; transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
 
         /* FX Layers */
         .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 12px; }
@@ -68,6 +73,9 @@
         @keyframes shimmer-pass-on { 0% { left: -150%; opacity: 0; } 10% { opacity: 1; } 100% { left: 200%; opacity: 0; } }
         @keyframes flare-expand-on { 0% { width: 0%; opacity: 0; } 10% { opacity: 1; } 40% { width: 180%; opacity: 1; } 100% { width: 180%; opacity: 0; } }
         @keyframes flash-burst-on { 0% { opacity: 0; } 5% { opacity: 0.8; } 100% { opacity: 0; } }
+        @keyframes mechanicFlipDown { 0% { transform: rotateX(0deg); filter: brightness(1); } 40% { filter: brightness(0.7); } 100% { transform: rotateX(90deg); filter: brightness(0.2); opacity: 0; } }
+        @keyframes impactFlashAnim { 0% { opacity: 0; transform: scale(1); } 10% { opacity: 1; background: white; transform: scale(1.2); } 100% { opacity: 0; transform: scale(1.5); } }
+        @keyframes shimmer-pass-off { 0% { left: 150%; opacity: 0; } 20% { opacity: 0.4; } 100% { left: -100%; opacity: 0; } }
         @keyframes fade-active { 0% { filter: brightness(1); } 50% { filter: brightness(2.5); } 100% { filter: brightness(1); } }
         @keyframes pop-active { 0% { transform: scale(1); filter: brightness(1); } 30% { transform: scale(1.3); filter: brightness(2); } 60% { transform: scale(1.1); filter: brightness(1.5); } 100% { transform: scale(1); filter: brightness(1); } }
 
@@ -75,7 +83,10 @@
         .scorebug-frame.visible .fx-shimmer { animation: shimmer-pass-on 1.5s ease-in-out forwards 0.6s; opacity: 1; }
         .scorebug-frame.visible .fx-anamorphic-flare { animation: flare-expand-on 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s; }
         .scorebug-frame.visible .fx-flash { animation: flash-burst-on 0.6s ease-out forwards 0.1s; }
+        .scorebug-frame.seq-active .fx-shimmer { animation: shimmer-pass-off 0.8s ease-in-out; opacity: 0.4; }
+        .scorebug-frame.seq-close .fx-flash { animation: impactFlashAnim 0.4s ease-out 0.2s; }
 
+        /* === Layout Components === */
         .main-logo-box {
             width: 198px; height: 99px;
             background: linear-gradient(to bottom, var(--silver-top) 0%, var(--silver-mid-upper) 50%, var(--silver-mid-lower) 51%, var(--silver-bot) 100%);
@@ -88,6 +99,7 @@
             transition: transform 0.4s var(--ease-elastic) 0.2s, opacity 0.3s 0.2s;
         }
         .scorebug-frame.visible .main-logo-box { transform: scaleX(1); opacity: 1; }
+        .scorebug-frame.seq-flip .main-logo-box { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards; }
         .main-logo-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 26px; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%); pointer-events: none; z-index: 6; }
         .main-logo-box::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 25; }
 
@@ -96,6 +108,7 @@
 
         .row-top { display: flex; height: 52px; background: #000; position: relative; z-index: 5; transform-style: preserve-3d; transform-origin: bottom center; backface-visibility: hidden; transform: translateY(100%) rotateX(-90deg); transition: transform 0.5s var(--ease-elastic) 0.4s; }
         .scorebug-frame.visible .row-top { transform: translateY(0) rotateX(0deg); }
+        .scorebug-frame.seq-flip .row-top { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards 0.05s; }
         .row-top::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 3px; background: linear-gradient(to bottom, #ffffff 0%, #aaaaaa 50%, #555555 100%); z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.6); border-bottom: 1px solid #111; }
 
         .row-bottom {
@@ -105,6 +118,7 @@
             transform-style: preserve-3d; transform-origin: top center; backface-visibility: hidden; transform: translateY(-100%) rotateX(90deg); transition: transform 0.5s var(--ease-elastic) 0.5s;
         }
         .scorebug-frame.visible .row-bottom { transform: translateY(0) rotateX(0deg); }
+        .scorebug-frame.seq-flip .row-bottom { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards 0.05s; }
         .row-bottom::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%); pointer-events: none; }
 
         .text-mask { overflow: hidden; display: inline-flex; justify-content: center; align-items: center; white-space: nowrap; vertical-align: middle; position: relative; z-index: 25; }
@@ -256,16 +270,37 @@
     <script>
         const scorebug = document.getElementById('scorebug');
 
-        // 페이지 로드 시 애니메이션 시작
-        setTimeout(() => {
-            scorebug.classList.add('visible');
-        }, 500);
+        // === ON/OFF AIR 애니메이션 ===
+        function playAnimation(type) {
+            if (type === 'in') {
+                scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
+                void scorebug.offsetWidth;
+                scorebug.classList.add('visible');
+            } else {
+                scorebug.classList.add('seq-active');
+                scorebug.classList.add('seq-flip');
+                setTimeout(() => { scorebug.classList.add('seq-close'); }, 500);
+                setTimeout(() => {
+                    scorebug.classList.add('seq-final-hide');
+                    scorebug.classList.remove('visible');
+                }, 1000);
+            }
+        }
 
         // === BroadcastChannel 실시간 수신 ===
         const channel = new BroadcastChannel('scorebug_sync');
 
         channel.onmessage = function(event) {
             const data = event.data;
+
+            // ON/OFF AIR 연동
+            if (data.action === 'on') {
+                playAnimation('in');
+                return;
+            } else if (data.action === 'off') {
+                playAnimation('out');
+                return;
+            }
 
             // 팀 이름 업데이트
             document.getElementById('team1Name').innerText = data.team1Name;

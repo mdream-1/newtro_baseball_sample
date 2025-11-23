@@ -802,11 +802,13 @@
 
         function playAnimation(type) {
             if (type === 'in') {
+                channel.postMessage({ action: 'on' });
                 scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
-                void scorebug.offsetWidth; 
+                void scorebug.offsetWidth;
                 scorebug.classList.add('visible');
                 backLogoContainer.classList.add('visible');
             } else {
+                channel.postMessage({ action: 'off' });
                 scorebug.classList.add('seq-active'); scorebug.classList.add('seq-flip');
                 setTimeout(() => { scorebug.classList.add('seq-close'); }, 500);
                 setTimeout(() => {
