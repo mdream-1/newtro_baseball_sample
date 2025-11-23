@@ -811,17 +811,21 @@
 
         function playAnimation(type) {
             if (type === 'in') {
+                // ON AIR: 스코어버그 보임, 배경로고 숨김
                 channel.postMessage({ action: 'on' });
+                backLogoContainer.classList.remove('visible');
                 scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
                 void scorebug.offsetWidth;
                 scorebug.classList.add('visible');
-                backLogoContainer.classList.add('visible');
             } else {
+                // OFF AIR: 스코어버그 숨김, 배경로고 보임
                 channel.postMessage({ action: 'off' });
                 scorebug.classList.add('seq-active'); scorebug.classList.add('seq-flip');
                 setTimeout(() => { scorebug.classList.add('seq-close'); }, 500);
                 setTimeout(() => {
-                    scorebug.classList.add('seq-final-hide'); scorebug.classList.remove('visible'); backLogoContainer.classList.remove('visible');
+                    scorebug.classList.add('seq-final-hide');
+                    scorebug.classList.remove('visible');
+                    backLogoContainer.classList.add('visible');
                 }, 1000);
             }
         }
