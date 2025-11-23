@@ -66,7 +66,7 @@
             clip-path: inset(0 0 0 0 round 12px);
             will-change: transform, opacity, clip-path;
             transition: opacity 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), clip-path 0.4s var(--ease-smooth-crash);
-            /* 안티앨리어싱 개선 */
+            perspective: 1000px;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             transform-style: preserve-3d;
@@ -75,8 +75,25 @@
         .scorebug-frame.seq-close { clip-path: inset(0 50% 0 50% round 12px); opacity: 0; transition: clip-path 0.4s var(--ease-smooth-crash), opacity 0.3s ease-out; }
         .scorebug-frame.seq-final-hide { opacity: 0 !important; transform: scale(0.9) !important; transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
 
+        /* === 배경 로고 레이어 (프레임 내부) === */
+        .back-logo-layer {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1; background: #000;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .back-logo-img { max-height: 80%; max-width: 80%; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); }
+        .scorebug-frame.visible .back-logo-layer { opacity: 0; visibility: hidden; transition: none; }
+        .scorebug-frame.visible.seq-flip .back-logo-layer,
+        .scorebug-frame.seq-flip .back-logo-layer { opacity: 1 !important; visibility: visible !important; transition: opacity 0.4s ease-in-out !important; }
+
+        /* 전면 컨텐츠 래퍼 */
+        .front-layer-wrapper { display: flex; flex-direction: row; position: relative; z-index: 10; opacity: 1; transition: opacity 0.3s ease-out; }
+        .scorebug-frame.seq-flip .front-layer-wrapper { opacity: 0; }
+
         /* FX Layers */
-        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 8px; overflow: hidden; }
+        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 8px; overflow: hidden; z-index: 900; }
         .fx-noise { z-index: 55; mix-blend-mode: overlay; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
         .fx-shimmer { z-index: 900; opacity: 0; top: 0; left: -150%; width: 150%; height: 100%; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.2) 50%, transparent 60%); transform: skewX(-20deg); filter: blur(3px); }
         .fx-anamorphic-flare { z-index: 950; opacity: 0; mix-blend-mode: screen; top: 0; left: 50%; width: 0%; height: 100%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
@@ -129,6 +146,16 @@
         .scorebug-frame.seq-flip .main-logo-box { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards; }
         .main-logo-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 26px; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%); pointer-events: none; z-index: 6; }
         .main-logo-box::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 25; }
+        #frontLogoDisplay { max-width: 80%; max-height: 80%; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
+
+        /* OFF AIR: 전면 컨텐츠 페이드아웃 */
+        .scorebug-frame.seq-flip .main-logo-box > *,
+        .scorebug-frame.seq-flip .content-column > * { opacity: 0; transition: opacity 0.3s ease-out; }
+        .scorebug-frame.seq-flip .main-logo-box,
+        .scorebug-frame.seq-flip .content-column { background: transparent !important; box-shadow: none !important; border: none !important; transition: background 0.3s, box-shadow 0.3s; }
+        .scorebug-frame.seq-flip .main-logo-box::before, .scorebug-frame.seq-flip .main-logo-box::after,
+        .scorebug-frame.seq-flip .row-top::after, .scorebug-frame.seq-flip .row-bottom::after,
+        .scorebug-frame.seq-flip .gel-effect::after, .scorebug-frame.seq-flip .bases-wrapper::before { opacity: 0; transition: opacity 0.3s; }
 
         .content-column { display: flex; flex-direction: column; position: relative; z-index: 10; overflow: hidden; max-width: 0; opacity: 1; will-change: max-width; transition: max-width 0.8s var(--ease-elastic) 0.2s; }
         .scorebug-frame.visible .content-column { max-width: 800px; }
@@ -172,16 +199,24 @@
         }
         .cell-team .text-mask { position: relative; top: 2px; z-index: 5; }
 
+        .team-logo {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            height: 140%; width: auto; z-index: 1;
+            filter: grayscale(100%) contrast(300%) brightness(1.2); opacity: 0.3; mix-blend-mode: overlay; pointer-events: none; max-width: none;
+        }
+
         .team-left {
             background: linear-gradient(to bottom, var(--blue-base-start), var(--blue-base-end));
             justify-content: flex-end;
             padding-right: 10px;
         }
+        .team-left .team-logo { left: 0; }
         .team-right {
             background: linear-gradient(to bottom, var(--red-base-start), var(--red-base-end));
             justify-content: flex-start;
             padding-left: 10px;
         }
+        .team-right .team-logo { right: 0; }
 
         .cell-score { width: 100px; background: #0a0a0a; box-shadow: inset 0 5px 15px rgba(0,0,0,1); font-family: var(--font-oswald); font-size: 48px; font-weight: 700; line-height: 52px; padding: 0; justify-content: center; }
         .cell-score .text-mask { height: 52px; display: flex; align-items: center; }
@@ -247,65 +282,75 @@
             <div class="fx-layer fx-flash"></div>
             <div class="fx-layer overall-sheen"></div>
 
-            <div class="main-logo-box">
-                <!-- 로고 표시 영역 -->
+            <!-- 배경 로고 레이어 (프레임 내부) -->
+            <div class="back-logo-layer">
+                <img id="backLogoDisplay" class="back-logo-img" src="images/전국명문고야구열전_로고.png" alt="">
             </div>
 
-            <div class="content-column">
-                <div class="row-top">
-                    <div class="cell cell-team team-left gel-effect">
-                        <div class="text-mask"><span class="reveal-text" id="team1Name">선공팀</span></div>
-                    </div>
-                    <div class="cell cell-score">
-                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">0</span></div>
-                    </div>
-                    <div class="cell cell-score">
-                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">0</span></div>
-                    </div>
-                    <div class="cell cell-team team-right gel-effect">
-                        <div class="text-mask"><span class="reveal-text" id="team2Name">후공팀</span></div>
-                    </div>
+            <!-- 전면 레이어 래퍼 -->
+            <div class="front-layer-wrapper">
+                <div class="main-logo-box">
+                    <img id="frontLogoDisplay" src="images/전국명문고야구열전_로고.png" alt="">
                 </div>
 
-                <div class="row-bottom">
-                    <div class="title-box">
-                        <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
-                    </div>
-                    <div class="inning-box-new">
-                        <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
-                        <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">1</span></div>
-                    </div>
-                    <div class="bso-container">
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
-                            <div id="b1" class="led-dot ball"></div>
-                            <div id="b2" class="led-dot ball"></div>
-                            <div id="b3" class="led-dot ball"></div>
+                <div class="content-column">
+                    <div class="row-top">
+                        <div class="cell cell-team team-left gel-effect" id="team1Box">
+                            <img id="team1LogoDisplay" class="team-logo" src="images/덕수고_로고.svg" alt="">
+                            <div class="text-mask"><span class="reveal-text" id="team1Name">덕수고등학교</span></div>
                         </div>
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
-                            <div id="s1" class="led-dot strike"></div>
-                            <div id="s2" class="led-dot strike"></div>
+                        <div class="cell cell-score">
+                            <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">0</span></div>
                         </div>
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
-                            <div id="o1" class="led-dot out"></div>
-                            <div id="o2" class="led-dot out"></div>
+                        <div class="cell cell-score">
+                            <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">0</span></div>
+                        </div>
+                        <div class="cell cell-team team-right gel-effect" id="team2Box">
+                            <div class="text-mask"><span class="reveal-text" id="team2Name">전주고등학교</span></div>
+                            <img id="team2LogoDisplay" class="team-logo" src="images/전주고_로고.svg" alt="">
                         </div>
                     </div>
 
-                    <div class="bases-wrapper" id="baseWrapper">
-                        <div class="base-content">
-                            <div class="field-diamond">
-                                <div id="base2" class="base-led second"></div>
-                                <div id="base1" class="base-led first"></div>
-                                <div id="base3" class="base-led third"></div>
+                    <div class="row-bottom">
+                        <div class="title-box">
+                            <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
+                        </div>
+                        <div class="inning-box-new">
+                            <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
+                            <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">1</span></div>
+                        </div>
+                        <div class="bso-container">
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
+                                <div id="b1" class="led-dot ball"></div>
+                                <div id="b2" class="led-dot ball"></div>
+                                <div id="b3" class="led-dot ball"></div>
+                            </div>
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
+                                <div id="s1" class="led-dot strike"></div>
+                                <div id="s2" class="led-dot strike"></div>
+                            </div>
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
+                                <div id="o1" class="led-dot out"></div>
+                                <div id="o2" class="led-dot out"></div>
                             </div>
                         </div>
-                        <div class="speed-content">
-                            <div class="speed-text-group">
-                                <span class="speed-text" id="speedValue">154.0</span>
-                                <span class="speed-unit">km/h</span>
+
+                        <div class="bases-wrapper" id="baseWrapper">
+                            <div class="base-content">
+                                <div class="field-diamond">
+                                    <div id="base2" class="base-led second"></div>
+                                    <div id="base1" class="base-led first"></div>
+                                    <div id="base3" class="base-led third"></div>
+                                </div>
+                            </div>
+                            <div class="speed-content">
+                                <div class="speed-text-group">
+                                    <span class="speed-text" id="speedValue">154.0</span>
+                                    <span class="speed-unit">km/h</span>
+                                </div>
                             </div>
                         </div>
                     </div>

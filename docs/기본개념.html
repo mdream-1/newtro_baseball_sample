@@ -21,28 +21,20 @@
         }
 
         :root {
-            /* Colors */
             --theme-mid: #a73b16;
             --blue-base-start: #005cb8; --blue-base-end: #003870;
             --red-base-start: #b30000; --red-base-end: #660000;
             --silver-top: #f2f2f2; --silver-mid-upper: #d9d9d9;
             --silver-mid-lower: #bfbfbf; --silver-bot: #cccccc;
-            --led-ball: #00ff41; --led-strike: #ffcc00; --led-out: #ff1a1a;    
+            --led-ball: #00ff41; --led-strike: #ffcc00; --led-out: #ff1a1a;
             --led-base: #ffcc00; --base-off: #333; --led-off: #1a1a1a;
-
-            /* Speed Gun Colors */
-            --speed-bg-start: #ffe033;
-            --speed-bg-end: #e6b800;
-
-            /* Fonts */
+            --speed-bg-start: #ffe033; --speed-bg-end: #e6b800;
             --font-condensed: 'Roboto Condensed', sans-serif;
             --font-oswald: 'Oswald', sans-serif;
             --font-korean: 'GmarketSansBold', sans-serif;
-
-            /* Easing Functions */
             --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
             --ease-mechanic: cubic-bezier(0.65, 0.05, 0.36, 1);
-            --ease-smooth-crash: cubic-bezier(0.6, 0, 0.1, 1); 
+            --ease-smooth-crash: cubic-bezier(0.6, 0, 0.1, 1);
             --ease-flap-fall: cubic-bezier(0.55, 0.055, 0.675, 0.19);
             --ease-flap-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --ease-slide: cubic-bezier(0.25, 1, 0.5, 1);
@@ -50,110 +42,43 @@
 
         body {
             margin: 0; padding: 0; background-color: #111;
-            height: 100vh; 
-            display: flex; flex-direction: column; 
-            overflow: hidden;
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
             font-family: var(--font-condensed);
         }
 
-        /* [신규] 최상단 헤더 레이블 */
+        /* [헤더 레이블] */
         .top-header-label {
-            width: 100%;
-            padding: 16px 40px;
-            background: #000;
-            color: #666;
-            font-size: 24px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-family: 'GmarketSansMedium', sans-serif;
-            z-index: 100;
-            flex-shrink: 0;
+            width: 100%; padding: 16px 20px; background: #000; color: #666;
+            font-size: 24px; border-bottom: 1px solid #333;
+            display: flex; align-items: center; gap: 20px;
+            font-family: 'GmarketSansMedium', sans-serif; z-index: 100; flex-shrink: 0;
         }
         .header-highlight { color: #aaa; font-weight: bold; }
 
-        /* 클린아웃 URL 바 */
+        /* [클린아웃 URL 바] */
         .cleanout-url-bar {
-            width: 100%;
-            padding: 10px 40px;
-            background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: 'GmarketSansMedium', sans-serif;
-            flex-shrink: 0;
+            width: 100%; padding: 8px 20px; background: #1a1a1a;
+            border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px;
+            font-family: 'GmarketSansMedium', sans-serif; font-size: 13px; flex-shrink: 0;
         }
-        .cleanout-label {
-            color: #00c853;
-            font-size: 12px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        .cleanout-url-box {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .cleanout-url-box:hover {
-            border-color: #00c853;
-            background: #0a0a0a;
-        }
-        .cleanout-url-box span {
-            flex: 1;
-            color: #0af;
-            font-family: monospace;
-            font-size: 14px;
-            user-select: all;
-        }
-        .cleanout-url-box i {
-            color: #666;
-            font-size: 14px;
-        }
-        .cleanout-url-box:hover i {
-            color: #00c853;
-        }
-        .copy-toast {
-            color: #00c853;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .copy-toast.show {
-            opacity: 1;
-        }
+        .cleanout-url-bar .label { color: #888; }
+        .cleanout-url-bar .url { color: #4fc3f7; background: #000; padding: 4px 10px; border-radius: 4px; font-family: monospace; }
+        .cleanout-url-bar .copy-btn { background: #333; color: #ccc; border: 1px solid #555; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .cleanout-url-bar .copy-btn:hover { background: #444; }
 
         /* === [2. 레이아웃 구조] === */
         .monitor-area {
-            height: 30vh;
-            width: 100%;
+            height: 30vh; min-height: 200px; width: 100%;
             display: flex; align-items: center; justify-content: center;
             background-image: radial-gradient(circle at center, #222 0%, #000 100%);
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid #333;
-            flex-shrink: 0;
+            position: relative; overflow: hidden; border-bottom: 1px solid #333;
         }
 
         .control-area {
-            flex: 1;
-            width: 100%;
-            background: #1a1a1a;
+            flex: 1; width: 100%; background: #1a1a1a;
             border-top: 4px solid #a73b16;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            padding: 20px;
-            overflow-y: auto;
-            color: #eee;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            padding: 20px; overflow-y: auto; color: #eee;
         }
 
         /* === [3. 메인 프레임] === */
@@ -167,16 +92,32 @@
             clip-path: inset(0 0 0 0 round 12px);
             will-change: transform, opacity, clip-path;
             transition: opacity 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), clip-path 0.4s var(--ease-smooth-crash);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
+            perspective: 1000px;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden; transform-style: preserve-3d;
         }
         .scorebug-frame.visible { opacity: 1; transform: scale(1); transition: opacity 0.1s, transform 0.5s var(--ease-elastic); }
         .scorebug-frame.seq-close { clip-path: inset(0 50% 0 50% round 12px); opacity: 0; transition: clip-path 0.4s var(--ease-smooth-crash), opacity 0.3s ease-out; }
         .scorebug-frame.seq-final-hide { opacity: 0 !important; transform: scale(0.9) !important; transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
 
+        /* === [배경 로고 레이어 - 프레임 내부] === */
+        .back-logo-layer {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1; background: #000;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .back-logo-img { max-height: 80%; max-width: 80%; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); }
+        .scorebug-frame.visible .back-logo-layer { opacity: 0; visibility: hidden; transition: none; }
+        .scorebug-frame.visible.seq-flip .back-logo-layer,
+        .scorebug-frame.seq-flip .back-logo-layer { opacity: 1 !important; visibility: visible !important; transition: opacity 0.4s ease-in-out !important; }
+
+        /* 전면 컨텐츠 래퍼 */
+        .front-layer-wrapper { display: flex; flex-direction: row; position: relative; z-index: 10; opacity: 1; transition: opacity 0.3s ease-out; }
+        .scorebug-frame.seq-flip .front-layer-wrapper { opacity: 0; }
+
         /* FX Layers */
-        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 8px; overflow: hidden; }
+        .fx-layer { position: absolute; inset: 0; pointer-events: none; border-radius: 8px; overflow: hidden; z-index: 900; }
         .fx-noise { z-index: 55; mix-blend-mode: overlay; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
         .fx-shimmer { z-index: 900; opacity: 0; top: 0; left: -150%; width: 150%; height: 100%; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.2) 50%, transparent 60%); transform: skewX(-20deg); filter: blur(3px); }
         .fx-anamorphic-flare { z-index: 950; opacity: 0; mix-blend-mode: screen; top: 0; left: 50%; width: 0%; height: 100%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
@@ -202,8 +143,6 @@
         @keyframes flip-mechanical { 0% { transform: rotateX(0deg); animation-timing-function: var(--ease-flap-fall); } 60% { transform: rotateX(-185deg); animation-timing-function: var(--ease-flap-bounce); } 80% { transform: rotateX(-178deg); } 100% { transform: rotateX(-180deg); } }
         @keyframes shadow-in { 0% { opacity: 0; } 100% { opacity: 1; } }
         @keyframes shadow-out { 0% { opacity: 1; } 100% { opacity: 0; } }
-
-        /* Slide Animations */
         @keyframes slide-base-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
         @keyframes slide-speed-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes slide-speed-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
@@ -224,92 +163,61 @@
         .main-logo-box::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 25; }
         #frontLogoDisplay { max-width: 80%; max-height: 80%; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
 
+        /* OFF AIR: 전면 컨텐츠 페이드아웃 */
+        .scorebug-frame.seq-flip .main-logo-box > *,
+        .scorebug-frame.seq-flip .content-column > * { opacity: 0; transition: opacity 0.3s ease-out; }
+        .scorebug-frame.seq-flip .main-logo-box,
+        .scorebug-frame.seq-flip .content-column { background: transparent !important; box-shadow: none !important; border: none !important; transition: background 0.3s, box-shadow 0.3s; }
+        .scorebug-frame.seq-flip .main-logo-box::before, .scorebug-frame.seq-flip .main-logo-box::after,
+        .scorebug-frame.seq-flip .row-top::after, .scorebug-frame.seq-flip .row-bottom::after,
+        .scorebug-frame.seq-flip .gel-effect::after, .scorebug-frame.seq-flip .bases-wrapper::before { opacity: 0; transition: opacity 0.3s; }
+
         .content-column { display: flex; flex-direction: column; position: relative; z-index: 10; overflow: hidden; max-width: 0; opacity: 1; will-change: max-width; transition: max-width 0.8s var(--ease-elastic) 0.2s; }
         .scorebug-frame.visible .content-column { max-width: 800px; }
 
         .row-top { display: flex; height: 52px; background: #000; position: relative; z-index: 5; transform-style: preserve-3d; transform-origin: bottom center; backface-visibility: hidden; transform: translateY(100%) rotateX(-90deg); transition: transform 0.5s var(--ease-elastic) 0.4s; }
         .scorebug-frame.visible .row-top { transform: translateY(0) rotateX(0deg); }
-        .scorebug-frame.seq-flip .row-top { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards 0.05s; }
         .row-top::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 3px; background: linear-gradient(to bottom, #ffffff 0%, #aaaaaa 50%, #555555 100%); z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.6); border-bottom: 1px solid #111; }
 
-        .row-bottom { 
-            display: flex; align-items: center; justify-content: flex-start; 
-            height: 44px; background: linear-gradient(to bottom, #222 0%, #000 100%); 
-            position: relative; padding-right: 0; margin-top: 3px; z-index: 1; 
-            transform-style: preserve-3d; transform-origin: top center; backface-visibility: hidden; transform: translateY(-100%) rotateX(90deg); transition: transform 0.5s var(--ease-elastic) 0.5s; 
-        }
+        .row-bottom { display: flex; align-items: center; justify-content: flex-start; height: 44px; background: linear-gradient(to bottom, #222 0%, #000 100%); position: relative; padding-right: 0; margin-top: 3px; z-index: 1; transform-style: preserve-3d; transform-origin: top center; backface-visibility: hidden; transform: translateY(-100%) rotateX(90deg); transition: transform 0.5s var(--ease-elastic) 0.5s; }
         .scorebug-frame.visible .row-bottom { transform: translateY(0) rotateX(0deg); }
-        .scorebug-frame.seq-flip .row-bottom { animation: mechanicFlipDown 0.3s var(--ease-mechanic) forwards 0.05s; }
         .row-bottom::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%); pointer-events: none; }
 
         .text-mask { overflow: hidden; display: inline-flex; justify-content: center; align-items: center; white-space: nowrap; vertical-align: middle; position: relative; z-index: 25; }
         .reveal-text { display: inline-block; transform: translateY(100%); filter: blur(5px); opacity: 0; transition: all 0.2s ease-out; white-space: nowrap; }
         .scorebug-frame.visible .reveal-text { transform: translateY(0); filter: blur(0); opacity: 1; transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s, filter 0.4s; }
-        
         .scorebug-frame.visible .cell-team .reveal-text { transition-delay: 0.6s; }
         .scorebug-frame.visible .cell-score .reveal-text { transition-delay: 0.7s; }
         .scorebug-frame.visible .title-box .reveal-text { transition-delay: 0.8s; }
         .scorebug-frame.visible .inning-box-new .reveal-text { transition-delay: 0.85s; }
         .scorebug-frame.visible .bso-label { transition-delay: 0.9s; transform: translateY(0) !important; opacity: 1 !important; }
 
-        /* Design Details */
         .gel-effect { position: relative; overflow: hidden; }
         .gel-effect::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none; z-index: 10; }
-        
+
         .cell { display: flex; align-items: center; color: white; position: relative; z-index: 2; }
         .cell + .cell::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #888, #ccc, #888); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 25; }
-        
-        /* [수정] 팀 박스 정렬 및 패딩 수정 */
-        .cell-team { 
-            width: 250px; 
-            font-family: var(--font-korean); font-size: 30px; 
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.9); 
-            white-space: nowrap; 
-            line-height: 1.35;
-        }
-        
-        /* [수정] 팀 로고 스타일: 흑백 선화 & Y축 오버 */
+
+        .cell-team { width: 250px; font-family: var(--font-korean); font-size: 30px; text-shadow: 2px 2px 0px rgba(0,0,0,0.9); white-space: nowrap; line-height: 1.35; }
+
         .team-logo {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            /* Y축 40% 오버 */
-            height: 140%; 
-            width: auto;
-            z-index: 1; 
-            /* 선화 느낌 필터 */
-            filter: grayscale(100%) contrast(300%) brightness(1.2);
-            opacity: 0.3;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            max-width: none; /* 가로 제한 해제 (X축 보존) */
+            position: absolute; top: 50%; transform: translateY(-50%);
+            height: 140%; width: auto; z-index: 1;
+            filter: grayscale(100%) contrast(300%) brightness(1.2); opacity: 0.3; mix-blend-mode: overlay; pointer-events: none; max-width: none;
         }
-        
-        /* 좌측 팀 (선공): 텍스트 우측 정렬, 로고 좌측 밀착 */
-        .team-left { 
-            background: linear-gradient(to bottom, var(--blue-base-start), var(--blue-base-end)); 
-            justify-content: flex-end; 
-            padding-right: 10px; 
-        }
+
+        .team-left { background: linear-gradient(to bottom, var(--blue-base-start), var(--blue-base-end)); justify-content: flex-end; padding-right: 10px; }
         .team-left .team-logo { left: 0; }
-
-        /* 우측 팀 (후공): 텍스트 좌측 정렬, 로고 우측 밀착 */
-        .team-right { 
-            background: linear-gradient(to bottom, var(--red-base-start), var(--red-base-end)); 
-            justify-content: flex-start; 
-            padding-left: 10px; 
-        }
+        .team-right { background: linear-gradient(to bottom, var(--red-base-start), var(--red-base-end)); justify-content: flex-start; padding-left: 10px; }
         .team-right .team-logo { right: 0; }
-
         .cell-team .text-mask { position: relative; top: 2px; z-index: 5; }
 
-        
         .cell-score { width: 100px; background: #0a0a0a; box-shadow: inset 0 5px 15px rgba(0,0,0,1); font-family: var(--font-oswald); font-size: 48px; font-weight: 700; line-height: 52px; padding: 0; justify-content: center; }
         .cell-score .text-mask { height: 52px; display: flex; align-items: center; }
         .cell-score .score-num { position: relative; top: -2px; }
         .cell-score.flipping { padding: 0; }
 
-        .metallic-text { background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.8)); }
+        .metallic-text { background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.8)); }
 
         .title-box { flex: 1; height: 100%; background: #0a0a0a; box-shadow: inset 0 5px 15px rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; position: relative; z-index: 5; margin-top: -3px; padding-top: 3px; }
         .title-box::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 15; }
@@ -318,13 +226,13 @@
         .inning-box-new { display: flex; align-items: center; justify-content: center; gap: 6px; height: 100%; padding: 0 15px; z-index: 5; position: relative; margin-top: -3px; padding-top: 3px; background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 40%, #999999 100%); box-shadow: inset 0 1px 0px rgba(255,255,255,1), inset 0 -2px 5px rgba(0,0,0,0.2); font-family: var(--font-condensed); font-weight: 900; }
         .inning-box-new::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%); pointer-events: none; z-index: 6; }
         .inning-box-new::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 15; }
-        
+
         .inning-num-large { font-size: 35px; color: #000; -webkit-text-stroke: 4px #fff; paint-order: stroke fill; text-shadow: 0 2px 3px rgba(0,0,0,0.3); line-height: 1; position: relative; top: 1px; z-index: 20; }
         .inning-arrow-small { font-size: 13.5px; color: #000; -webkit-text-stroke: 3px #fff; paint-order: stroke fill; text-shadow: 0 1px 2px rgba(0,0,0,0.3); position: relative; top: 2px; z-index: 20; }
 
-        .bso-container { display: flex; gap: 15px; margin-left: 15px; z-index: 2; align-items: center; } 
+        .bso-container { display: flex; gap: 15px; margin-left: 15px; z-index: 2; align-items: center; }
         .bso-group { display: flex; align-items: center; gap: 6px; }
-        .bso-label { font-family: var(--font-oswald); font-weight: 700; font-size: 27px; width: 24px; text-align: center; background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 2px rgba(0,0,0,1)); position: relative; top: -2px; transform: translateY(100%); opacity: 0; transition: all 0.3s ease-out; }
+        .bso-label { font-family: var(--font-oswald); font-weight: 700; font-size: 27px; width: 24px; text-align: center; background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 2px rgba(0,0,0,1)); position: relative; top: -2px; transform: translateY(100%); opacity: 0; transition: all 0.3s ease-out; }
 
         .led-dot { width: 24px; height: 24px; border-radius: 50%; background-color: var(--led-off); border: 2px solid #000; box-shadow: inset 0 2px 5px rgba(0,0,0,1), 0 1px 0 rgba(255,255,255,0.1); position: relative; background-image: radial-gradient(rgba(0,0,0,0.5) 30%, transparent 30%); background-size: 5px 5px; }
         .led-dot::after { content: ""; position: absolute; top: 2px; left: 3px; width: 40%; height: 40%; border-radius: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%); z-index: 5; }
@@ -335,14 +243,13 @@
         .bases-wrapper::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to right, #444, #777, #444); box-shadow: -1px 0 2px rgba(0,0,0,0.5), 1px 0 2px rgba(0,0,0,0.5); z-index: 15; }
 
         .base-content, .speed-content { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; will-change: transform; }
-        
         .speed-content { transform: translateX(100%); background: linear-gradient(to bottom, #ffe033 0%, #e6b800 100%); box-shadow: inset 0 0 5px rgba(255,255,255,0.6); width: 102%; left: -1%; z-index: 20; }
         .speed-content::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none; z-index: 6; }
         .speed-text-group { display: flex; align-items: baseline; justify-content: center; position: relative; z-index: 10; }
         .speed-text { font-family: var(--font-oswald); font-weight: 700; font-size: 26px; color: #000; text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
         .speed-unit { font-family: var(--font-oswald); font-size: 13px; color: #444; font-weight: 700; margin-left: 2px; }
 
-        .field-diamond { position: relative; width: 32px; height: 32px; transform: rotate(45deg); top: 6px; left: 3px; } 
+        .field-diamond { position: relative; width: 32px; height: 32px; transform: rotate(45deg); top: 6px; left: 3px; }
         .base-led { position: absolute; width: 12px; height: 12px; background-color: var(--base-off); border: 1px solid #222; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8); transition: all 0.2s; background-image: radial-gradient(rgba(0,0,0,0.5) 30%, transparent 30%); background-size: 5px 5px; }
         .base-led::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent); }
         .base-led.second { top: 0; left: 0; border-top-left-radius: 2px; }
@@ -350,16 +257,10 @@
         .base-led.third { bottom: 0; left: 0; border-bottom-left-radius: 2px; }
         .base-led.on { background-color: var(--led-base); box-shadow: inset 0 0 5px #fff, 0 0 8px var(--led-base); border-color: #fff; z-index: 10; background-image: radial-gradient(rgba(0,0,0,0.3) 30%, transparent 30%); animation: pop-active 0.3s var(--ease-mechanic); }
 
-        /* Animations */
         .bases-wrapper.anim-enter .base-content { animation: slide-base-out-left 0.5s var(--ease-slide) forwards; }
         .bases-wrapper.anim-enter .speed-content { animation: slide-speed-in-right 0.5s var(--ease-slide) forwards; }
         .bases-wrapper.anim-exit .speed-content { animation: slide-speed-out-left 0.5s var(--ease-slide) forwards; }
         .bases-wrapper.anim-exit .base-content { animation: slide-base-in-right 0.5s var(--ease-slide) forwards; }
-
-        /* Back Logo Container */
-        .back-logo-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 300px; display: flex; align-items: center; justify-content: center; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
-        .back-logo-container.visible { opacity: 1; }
-        .back-logo-container img { max-width: 100%; max-height: 100%; opacity: 0.15; filter: grayscale(100%) contrast(1.2); mix-blend-mode: screen; }
 
         /* Split Flap */
         .flap-wrapper { position: relative; width: 100%; height: 52px; perspective: 300px; overflow: hidden; }
@@ -367,12 +268,10 @@
         .flap-top { top: 0; align-items: flex-end; border-bottom: 1px solid rgba(255,255,255,0.2); z-index: 1; }
         .flap-bottom { bottom: 0; align-items: flex-start; z-index: 2; }
         .flap-text { font-family: var(--font-oswald); font-size: 48px; font-weight: 700; height: 52px; line-height: 52px; display: flex; align-items: center; justify-content: center; width: 100%; }
-        .flap-text span { background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.8)); display: block; position: relative; top: -2px; }
+        .flap-text span { background: linear-gradient(to bottom, #ffffff 40%, #999999 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 2px 0px rgba(0,0,0,0.8)); display: block; position: relative; top: -2px; }
         .flap-top .flap-text { transform: translateY(26px); }
         .flap-bottom .flap-text { transform: translateY(-26px); }
         .flap-flipper { position: absolute; top: 0; left: 0; width: 100%; height: 50%; z-index: 3; transform-style: preserve-3d; transform-origin: bottom; }
-        
-        /* [FIX] Front Face Alignment */
         .flap-face { position: absolute; inset: 0; backface-visibility: hidden; background: #0a0a0a; overflow: hidden; display: flex; justify-content: center; align-items: flex-end; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .flap-face:not(.flap-back) .flap-text { transform: translateY(26px); }
         .flap-back { transform: rotateX(180deg); align-items: flex-start; border-bottom: none; border-top: 1px solid rgba(255,255,255,0.2); }
@@ -419,24 +318,18 @@
     <div class="top-header-label">
         <span class="header-highlight">(주)미러드림 중계사업부 제작</span>
         <span style="color:#444">|</span>
-        <span>그래픽표출 관련 팩트블록사 담당자분들께 기술적 설명을 드리기 위한 샘플입니다.</span>
+        <span>그래픽표출 관련 팩트블록사 담당자분들의 기술적 설명을 드리기 위한 샘플입니다.</span>
     </div>
-    <!-- 클린아웃 주소 행 -->
+
+    <!-- 클린아웃 URL 바 -->
     <div class="cleanout-url-bar">
-        <span class="cleanout-label">CLEAN OUT URL (vMix/OBS)</span>
-        <div class="cleanout-url-box" onclick="copyCleanoutUrl()" title="클릭하여 복사">
-            <span id="cleanoutUrl">https://mdream-1.github.io/newtro_baseball_sample/cleanout.html</span>
-            <i class="fa-regular fa-copy"></i>
-        </div>
-        <span class="copy-toast" id="copyToast">복사됨!</span>
+        <span class="label">Clean Output URL:</span>
+        <span class="url" id="cleanoutUrl"></span>
+        <button class="copy-btn" onclick="copyCleanoutUrl()"><i class="fa-regular fa-copy"></i> 복사</button>
     </div>
 
     <!-- 상단: 모니터링 영역 -->
     <div class="monitor-area">
-        <div class="back-logo-container">
-            <img id="backLogoDisplay" src="" alt="">
-        </div>
-
         <div id="scorebug" class="scorebug-frame">
             <div class="fx-layer fx-outline-light"></div>
             <div class="fx-layer fx-noise"></div>
@@ -445,69 +338,75 @@
             <div class="fx-layer fx-flash"></div>
             <div class="fx-layer overall-sheen"></div>
 
-            <div class="main-logo-box">
-                <img id="frontLogoDisplay" src="" alt="" style="display:none; max-width:80%; max-height:80%; object-fit:contain; z-index:10; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));">
+            <!-- 배경 로고 레이어 (프레임 내부) -->
+            <div class="back-logo-layer">
+                <img id="backLogoDisplay" class="back-logo-img" src="images/전국명문고야구열전_로고.png" alt="">
             </div>
 
-            <div class="content-column">
-                <div class="row-top">
-                    <!-- [수정] 팀 1: 좌측 로고 이미지 추가 -->
-                    <div class="cell cell-team team-left gel-effect" id="team1Box">
-                        <img id="team1LogoDisplay" class="team-logo" src="" alt="" style="display:none;">
-                        <div class="text-mask"><span class="reveal-text" id="team1Name">선공파이터스</span></div>
-                    </div>
-                    <div class="cell cell-score" id="scoreBox1">
-                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">5</span></div>
-                    </div>
-                    <div class="cell cell-score" id="scoreBox2">
-                        <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">2</span></div>
-                    </div>
-                    <!-- [수정] 팀 2: 우측 로고 이미지 추가 -->
-                    <div class="cell cell-team team-right gel-effect" id="team2Box">
-                        <div class="text-mask"><span class="reveal-text" id="team2Name">후공챌린져스</span></div>
-                        <img id="team2LogoDisplay" class="team-logo" src="" alt="" style="display:none;">
-                    </div>
+            <!-- 전면 레이어 래퍼 -->
+            <div class="front-layer-wrapper">
+                <div class="main-logo-box">
+                    <img id="frontLogoDisplay" src="images/전국명문고야구열전_로고.png" alt="" style="max-width:80%; max-height:80%; object-fit:contain; z-index:10; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));">
                 </div>
 
-                <div class="row-bottom">
-                    <div class="title-box">
-                        <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
-                    </div>
-                    <div class="inning-box-new">
-                        <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
-                        <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">3</span></div>
-                    </div>
-                    <div class="bso-container">
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
-                            <div id="b1" class="led-dot ball"></div>
-                            <div id="b2" class="led-dot ball"></div>
-                            <div id="b3" class="led-dot ball"></div>
+                <div class="content-column">
+                    <div class="row-top">
+                        <div class="cell cell-team team-left gel-effect" id="team1Box">
+                            <img id="team1LogoDisplay" class="team-logo" src="images/덕수고_로고.svg" alt="">
+                            <div class="text-mask"><span class="reveal-text" id="team1Name">덕수고등학교</span></div>
                         </div>
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
-                            <div id="s1" class="led-dot strike"></div>
-                            <div id="s2" class="led-dot strike"></div>
+                        <div class="cell cell-score" id="scoreBox1">
+                            <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score1">0</span></div>
                         </div>
-                        <div class="bso-group">
-                            <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
-                            <div id="o1" class="led-dot out"></div>
-                            <div id="o2" class="led-dot out"></div>
+                        <div class="cell cell-score" id="scoreBox2">
+                            <div class="text-mask"><span class="score-num metallic-text reveal-text" id="score2">0</span></div>
+                        </div>
+                        <div class="cell cell-team team-right gel-effect" id="team2Box">
+                            <div class="text-mask"><span class="reveal-text" id="team2Name">전주고등학교</span></div>
+                            <img id="team2LogoDisplay" class="team-logo" src="images/전주고_로고.svg" alt="">
                         </div>
                     </div>
-                    
-                    <div class="bases-wrapper" id="baseWrapper">
-                        <div class="base-content">
-                            <div class="field-diamond">
-                                <div id="base2" class="base-led second"></div>
-                                <div id="base1" class="base-led first"></div>
-                                <div id="base3" class="base-led third"></div>
+
+                    <div class="row-bottom">
+                        <div class="title-box">
+                            <div class="text-mask"><span class="title-text-small reveal-text" id="gameTitle">전국 명문고 야구열전</span></div>
+                        </div>
+                        <div class="inning-box-new">
+                            <div class="text-mask" style="position: relative; top: 2px;"><span class="inning-arrow-small reveal-text" id="inningArrow">▲</span></div>
+                            <div class="text-mask" style="position: relative; top: -1px;"><span class="inning-num-large reveal-text" id="inningNum">1</span></div>
+                        </div>
+                        <div class="bso-container">
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">B</span></div>
+                                <div id="b1" class="led-dot ball"></div>
+                                <div id="b2" class="led-dot ball"></div>
+                                <div id="b3" class="led-dot ball"></div>
+                            </div>
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">S</span></div>
+                                <div id="s1" class="led-dot strike"></div>
+                                <div id="s2" class="led-dot strike"></div>
+                            </div>
+                            <div class="bso-group">
+                                <div class="text-mask"><span class="bso-label metallic-text">O</span></div>
+                                <div id="o1" class="led-dot out"></div>
+                                <div id="o2" class="led-dot out"></div>
                             </div>
                         </div>
-                        <div class="speed-content">
-                            <div class="speed-text-group">
-                                <span class="speed-text" id="speedValue">154.0</span>
-                                <span class="speed-unit">km/h</span>
+
+                        <div class="bases-wrapper" id="baseWrapper">
+                            <div class="base-content">
+                                <div class="field-diamond">
+                                    <div id="base2" class="base-led second"></div>
+                                    <div id="base1" class="base-led first"></div>
+                                    <div id="base3" class="base-led third"></div>
+                                </div>
+                            </div>
+                            <div class="speed-content">
+                                <div class="speed-text-group">
+                                    <span class="speed-text" id="speedValue">154.0</span>
+                                    <span class="speed-unit">km/h</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -554,14 +453,14 @@
             <div class="control-title">이닝 (Inning)</div>
             <div class="btn-row">
                 <button class="c-btn" onclick="changeInningStep(-1)"><i class="fa-solid fa-minus"></i></button>
-                <button class="c-btn" style="flex:2; pointer-events:none;" id="inningDisplay">3회초</button>
+                <button class="c-btn" style="flex:2; pointer-events:none;" id="inningDisplay">1회초</button>
                 <button class="c-btn" onclick="changeInningStep(1)"><i class="fa-solid fa-plus"></i></button>
             </div>
             <div class="btn-row" style="margin-top:10px;">
                 <button class="c-btn btn-clear" style="flex:1; background:#600; color:#fff" onclick="clearAll()">모두 CLEAR</button>
             </div>
         </div>
-        
+
         <div class="control-group">
             <div class="control-title">스피드건 (Speed Gun)</div>
             <div class="input-row">
@@ -583,7 +482,7 @@
             <div class="control-title">선공 (Team 1)</div>
             <div class="input-row">
                 <span class="label-text">이름</span>
-                <input type="text" class="c-input" id="inputTeam1" value="선공파이터스" oninput="updateText('team1Name', this.value)">
+                <input type="text" class="c-input" id="inputTeam1" value="덕수고등학교" oninput="updateText('team1Name', this.value)">
             </div>
             <div class="input-row">
                 <span class="label-text">배경</span>
@@ -593,10 +492,9 @@
             </div>
             <div class="btn-row">
                 <button class="c-btn score-ctrl" onclick="changeScore(1, -1)"><i class="fa-solid fa-minus"></i></button>
-                <div class="score-display" id="ctrlScore1">5</div>
+                <div class="score-display" id="ctrlScore1">0</div>
                 <button class="c-btn score-ctrl" onclick="changeScore(1, 1)"><i class="fa-solid fa-plus"></i></button>
             </div>
-             <!-- [신규] 팀 1 로고 업로드 -->
             <div class="btn-row">
                 <button class="c-btn btn-upload" style="width:100%" onclick="document.getElementById('team1LogoInput').click()">
                     <i class="fa-regular fa-image" style="margin-right:5px"></i> 로고 업로드
@@ -609,7 +507,7 @@
             <div class="control-title">후공 (Team 2)</div>
             <div class="input-row">
                 <span class="label-text">이름</span>
-                <input type="text" class="c-input" id="inputTeam2" value="후공챌린져스" oninput="updateText('team2Name', this.value)">
+                <input type="text" class="c-input" id="inputTeam2" value="전주고등학교" oninput="updateText('team2Name', this.value)">
             </div>
             <div class="input-row">
                 <span class="label-text">배경</span>
@@ -619,11 +517,10 @@
             </div>
             <div class="btn-row">
                 <button class="c-btn score-ctrl" onclick="changeScore(2, -1)"><i class="fa-solid fa-minus"></i></button>
-                <div class="score-display" id="ctrlScore2">2</div>
+                <div class="score-display" id="ctrlScore2">0</div>
                 <button class="c-btn score-ctrl" onclick="changeScore(2, 1)"><i class="fa-solid fa-plus"></i></button>
             </div>
-             <!-- [신규] 팀 2 로고 업로드 -->
-             <div class="btn-row">
+            <div class="btn-row">
                 <button class="c-btn btn-upload" style="width:100%" onclick="document.getElementById('team2LogoInput').click()">
                     <i class="fa-regular fa-image" style="margin-right:5px"></i> 로고 업로드
                 </button>
@@ -652,17 +549,25 @@
     </div>
 
     <script>
-        let scores = { 1: 5, 2: 2 };
-        let inningStep = 5;
+        // === BroadcastChannel 초기화 ===
+        const channel = new BroadcastChannel('scorebug_sync');
+
+        let scores = { 1: 0, 2: 0 };
+        let inningStep = 1;
         let bases = { 1: false, 2: false, 3: false };
         let bso = { b: 0, s: 0, o: 0 };
         let speedTimer = null;
 
         const scorebug = document.getElementById('scorebug');
-        const backLogoContainer = document.querySelector('.back-logo-container');
 
-        // === BroadcastChannel 실시간 연동 (상단 선언) ===
-        const channel = new BroadcastChannel('scorebug_sync');
+        // 클린아웃 URL 설정
+        const cleanoutUrl = window.location.href.replace('기본개념.html', 'cleanout.html');
+        document.getElementById('cleanoutUrl').textContent = cleanoutUrl;
+
+        function copyCleanoutUrl() {
+            navigator.clipboard.writeText(cleanoutUrl);
+            alert('클린아웃 URL이 복사되었습니다!');
+        }
 
         function broadcastState() {
             channel.postMessage({
@@ -688,7 +593,6 @@
                 wrapper.classList.remove('anim-enter');
                 wrapper.classList.add('anim-exit');
             }, 2000);
-            // 클린아웃에 스피드 값 전송
             channel.postMessage({ action: 'speed', value: val });
         }
 
@@ -711,8 +615,8 @@
                     <div class="flap-card flap-top"><div class="flap-text"><span>${newVal}</span></div></div>
                     <div class="flap-card flap-bottom"><div class="flap-text"><span>${oldVal}</span></div></div>
                     <div class="flap-flipper animate-flip">
-                        <div class="flap-face"><div class="flap-text"><span>${oldVal}</span></div><div class="absolute inset-0 bg-black/0 animate-shadow-in"></div></div>
-                        <div class="flap-face flap-back"><div class="flap-text"><span>${newVal}</span></div><div class="absolute inset-0 bg-black/50 animate-shadow-out"></div></div>
+                        <div class="flap-face"><div class="flap-text"><span>${oldVal}</span></div></div>
+                        <div class="flap-face flap-back"><div class="flap-text"><span>${newVal}</span></div></div>
                     </div>
                 </div>
             `;
@@ -730,12 +634,16 @@
             broadcastState();
         }
 
-        function updateText(id, val) { document.getElementById(id).innerText = val; broadcastState(); }
+        function updateText(id, val) {
+            document.getElementById(id).innerText = val;
+            broadcastState();
+        }
+
         function updateTeamColor(teamId, hex) {
             const box = document.getElementById(`team${teamId}Box`);
             const darken = (hex, amount) => {
                 let c = parseInt(hex.substring(1), 16);
-                let r = (c >> 16) & 255; g = (c >> 8) & 255; b = c & 255;
+                let r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255;
                 r = Math.max(0, r - amount); g = Math.max(0, g - amount); b = Math.max(0, b - amount);
                 return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
             }
@@ -811,21 +719,17 @@
 
         function playAnimation(type) {
             if (type === 'in') {
-                // ON AIR: 스코어버그 보임, 배경로고 숨김
                 channel.postMessage({ action: 'on' });
-                backLogoContainer.classList.remove('visible');
                 scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
                 void scorebug.offsetWidth;
                 scorebug.classList.add('visible');
             } else {
-                // OFF AIR: 스코어버그 숨김, 배경로고 보임
                 channel.postMessage({ action: 'off' });
                 scorebug.classList.add('seq-active'); scorebug.classList.add('seq-flip');
                 setTimeout(() => { scorebug.classList.add('seq-close'); }, 500);
                 setTimeout(() => {
                     scorebug.classList.add('seq-final-hide');
                     scorebug.classList.remove('visible');
-                    backLogoContainer.classList.add('visible');
                 }, 1000);
             }
         }
@@ -853,18 +757,6 @@
         }
 
         setTimeout(() => playAnimation('in'), 500);
-
-        // 페이지 로드시 초기 상태 broadcast
-        setTimeout(() => broadcastState(), 1000);
-
-        function copyCleanoutUrl() {
-            const url = document.getElementById('cleanoutUrl').innerText;
-            navigator.clipboard.writeText(url).then(() => {
-                const toast = document.getElementById('copyToast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 1500);
-            });
-        }
     </script>
 
 </body>
