@@ -73,6 +73,64 @@
         }
         .header-highlight { color: #aaa; font-weight: bold; }
 
+        /* 클린아웃 URL 바 */
+        .cleanout-url-bar {
+            width: 100%;
+            padding: 10px 40px;
+            background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'GmarketSansMedium', sans-serif;
+            flex-shrink: 0;
+        }
+        .cleanout-label {
+            color: #00c853;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .cleanout-url-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cleanout-url-box:hover {
+            border-color: #00c853;
+            background: #0a0a0a;
+        }
+        .cleanout-url-box span {
+            flex: 1;
+            color: #0af;
+            font-family: monospace;
+            font-size: 14px;
+            user-select: all;
+        }
+        .cleanout-url-box i {
+            color: #666;
+            font-size: 14px;
+        }
+        .cleanout-url-box:hover i {
+            color: #00c853;
+        }
+        .copy-toast {
+            color: #00c853;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .copy-toast.show {
+            opacity: 1;
+        }
+
         /* === [2. 레이아웃 구조] === */
         .monitor-area {
             height: 30vh;
@@ -355,6 +413,15 @@
         <span class="header-highlight">(주)미러드림 중계사업부 제작</span>
         <span style="color:#444">|</span>
         <span>그래픽표출 관련 팩트블록사 담당자분들께 기술적 설명을 드리기 위한 샘플입니다.</span>
+    </div>
+    <!-- 클린아웃 주소 행 -->
+    <div class="cleanout-url-bar">
+        <span class="cleanout-label">CLEAN OUT URL (vMix/OBS)</span>
+        <div class="cleanout-url-box" onclick="copyCleanoutUrl()" title="클릭하여 복사">
+            <span id="cleanoutUrl">https://mdream-1.github.io/newtro_baseball_sample/cleanout.html</span>
+            <i class="fa-regular fa-copy"></i>
+        </div>
+        <span class="copy-toast" id="copyToast">복사됨!</span>
     </div>
 
     <!-- 상단: 모니터링 영역 -->
@@ -749,6 +816,15 @@
         }
 
         setTimeout(() => playAnimation('in'), 500);
+
+        function copyCleanoutUrl() {
+            const url = document.getElementById('cleanoutUrl').innerText;
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('copyToast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 1500);
+            });
+        }
     </script>
 
 </body>
