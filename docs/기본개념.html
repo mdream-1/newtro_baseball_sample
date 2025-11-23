@@ -75,14 +75,14 @@
 
         /* === [2. 레이아웃 구조] === */
         .monitor-area {
-            flex: 1; 
+            height: 30vh;
             width: 100%;
-            min-height: 350px;
             display: flex; align-items: center; justify-content: center;
             background-image: radial-gradient(circle at center, #222 0%, #000 100%);
             position: relative;
             overflow: hidden;
             border-bottom: 1px solid #333;
+            flex-shrink: 0;
         }
 
         .control-area {
