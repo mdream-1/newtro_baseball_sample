@@ -646,13 +646,29 @@
 
     <script>
         let scores = { 1: 5, 2: 2 };
-        let inningStep = 5; 
+        let inningStep = 5;
         let bases = { 1: false, 2: false, 3: false };
         let bso = { b: 0, s: 0, o: 0 };
         let speedTimer = null;
 
         const scorebug = document.getElementById('scorebug');
         const backLogoContainer = document.querySelector('.back-logo-container');
+
+        // === BroadcastChannel 실시간 연동 (상단 선언) ===
+        const channel = new BroadcastChannel('scorebug_sync');
+
+        function broadcastState() {
+            channel.postMessage({
+                team1Name: document.getElementById('team1Name').innerText,
+                team2Name: document.getElementById('team2Name').innerText,
+                score1: scores[1],
+                score2: scores[2],
+                inningStep: inningStep,
+                bso: bso,
+                bases: bases,
+                gameTitle: document.getElementById('gameTitle').innerText
+            });
+        }
 
         function showSpeed(val) {
             const wrapper = document.getElementById('baseWrapper');
@@ -702,9 +718,10 @@
             const newVal = scores[teamId];
             document.getElementById(`ctrlScore${teamId}`).innerText = newVal;
             if (oldVal !== newVal) animateScoreChange(teamId, oldVal, newVal);
+            broadcastState();
         }
 
-        function updateText(id, val) { document.getElementById(id).innerText = val; }
+        function updateText(id, val) { document.getElementById(id).innerText = val; broadcastState(); }
         function updateTeamColor(teamId, hex) {
             const box = document.getElementById(`team${teamId}Box`);
             const darken = (hex, amount) => {
@@ -727,6 +744,7 @@
             document.getElementById('inningArrow').innerText = isTop ? "▲" : "▼";
             document.getElementById('inningDisplay').innerText = `${inningNum}회${isTop ? '초' : '말'}`;
             if (prevStep !== inningStep) { setBSO('b', 0); setBSO('s', 0); setBSO('o', 0); clearBase(); }
+            broadcastState();
         }
 
         function setBSO(type, count) {
@@ -745,6 +763,7 @@
                 const btn = document.getElementById(`btn-${type}${i}`);
                 if(btn) { if(i <= count) btn.classList.add('active'); else btn.classList.remove('active'); }
             }
+            broadcastState();
         }
 
         function toggleBase(baseId) {
@@ -758,6 +777,7 @@
                 el.classList.remove('on');
                 btn.classList.remove('active');
             }
+            broadcastState();
         }
 
         function clearBase() {
@@ -766,6 +786,7 @@
                 document.getElementById(`base${i}`).classList.remove('on');
                 document.getElementById(`btnBase${i}`).classList.remove('active');
             }
+            broadcastState();
         }
 
         function clearAll() {
@@ -776,6 +797,7 @@
             if(document.getElementById('score2')) animateScoreChange(2, document.getElementById('score2').innerText.trim(), 0);
             inningStep = 1;
             document.getElementById('inningNum').innerText = 1; document.getElementById('inningArrow').innerText = "▲"; document.getElementById('inningDisplay').innerText = "1회초";
+            broadcastState();
         }
 
         function playAnimation(type) {
@@ -817,64 +839,8 @@
 
         setTimeout(() => playAnimation('in'), 500);
 
-        // === BroadcastChannel 실시간 연동 ===
-        const channel = new BroadcastChannel('scorebug_sync');
-
-        function broadcastState() {
-            channel.postMessage({
-                team1Name: document.getElementById('team1Name').innerText,
-                team2Name: document.getElementById('team2Name').innerText,
-                score1: scores[1],
-                score2: scores[2],
-                inningStep: inningStep,
-                bso: bso,
-                bases: bases,
-                gameTitle: document.getElementById('gameTitle').innerText
-            });
-        }
-
-        // 기존 함수들에 broadcast 호출 추가
-        const originalSetBSO = setBSO;
-        setBSO = function(type, count) {
-            originalSetBSO(type, count);
-            broadcastState();
-        };
-
-        const originalToggleBase = toggleBase;
-        toggleBase = function(baseId) {
-            originalToggleBase(baseId);
-            broadcastState();
-        };
-
-        const originalClearBase = clearBase;
-        clearBase = function() {
-            originalClearBase();
-            broadcastState();
-        };
-
-        const originalChangeScore = changeScore;
-        changeScore = function(teamId, delta) {
-            originalChangeScore(teamId, delta);
-            broadcastState();
-        };
-
-        const originalChangeInningStep = changeInningStep;
-        changeInningStep = function(delta) {
-            originalChangeInningStep(delta);
-            broadcastState();
-        };
-
-        const originalClearAll = clearAll;
-        clearAll = function() {
-            originalClearAll();
-            broadcastState();
-        };
-
-        const originalUpdateText = updateText;
-        updateText = function(id, val) {
-            originalUpdateText(id, val);
-            broadcastState();
-        };
+        // 페이지 로드시 초기 상태 broadcast
+        setTimeout(() => broadcastState(), 1000);
 
         function copyCleanoutUrl() {
             const url = document.getElementById('cleanoutUrl').innerText;
