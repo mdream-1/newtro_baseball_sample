@@ -85,10 +85,17 @@
         .scorebug-frame.seq-flip .front-layer-wrapper { opacity: 0; }
 
         .fx-layer { position: absolute; inset: 0; pointer-events: none; z-index: 900; }
+        .fx-noise { z-index: 55; mix-blend-mode: overlay; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
         .fx-shimmer { z-index: 900; opacity: 0; top: 0; left: -150%; width: 150%; height: 100%; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.2) 50%, transparent 60%); transform: skewX(-20deg); filter: blur(3px); }
+        .fx-anamorphic-flare { z-index: 950; opacity: 0; mix-blend-mode: screen; top: 0; left: 50%; width: 0%; height: 100%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
+        .fx-anamorphic-flare::before { content: ''; width: 100%; height: 4px; background: linear-gradient(90deg, transparent, rgba(200, 230, 255, 0.9), #fff, rgba(200, 230, 255, 0.9), transparent); box-shadow: 0 0 30px rgba(0, 180, 255, 0.8); }
         .fx-flash { z-index: 999; mix-blend-mode: overlay; background: white; opacity: 0; }
+        .fx-outline-light { z-index: 850; opacity: 0; mix-blend-mode: screen; }
+        .overall-sheen { z-index: 990; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.05) 60%); }
 
+        @keyframes outline-flash-intro { 0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } 15% { opacity: 1; box-shadow: inset 0 0 0 4px rgba(220, 255, 255, 1), 0 0 40px rgba(0, 220, 255, 0.8); border-color: rgba(255,255,255,1); } 100% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } }
         @keyframes shimmer-pass-on { 0% { left: -150%; opacity: 0; } 10% { opacity: 1; } 100% { left: 200%; opacity: 0; } }
+        @keyframes flare-expand-on { 0% { width: 0%; opacity: 0; } 10% { opacity: 1; } 40% { width: 180%; opacity: 1; } 100% { width: 180%; opacity: 0; } }
         @keyframes flash-burst-on { 0% { opacity: 0; } 5% { opacity: 0.8; } 100% { opacity: 0; } }
         @keyframes mechanicFlipDown { 0% { transform: rotateX(0deg); filter: brightness(1); } 40% { filter: brightness(0.7); } 100% { transform: rotateX(90deg); filter: brightness(0.2); opacity: 0; } }
         @keyframes flip-mechanical { 0% { transform: rotateX(0deg); animation-timing-function: var(--ease-flap-fall); } 60% { transform: rotateX(-185deg); animation-timing-function: var(--ease-flap-bounce); } 80% { transform: rotateX(-178deg); } 100% { transform: rotateX(-180deg); } }
@@ -99,7 +106,9 @@
         @keyframes slide-speed-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
         @keyframes slide-base-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
+        .scorebug-frame.visible .fx-outline-light { animation: outline-flash-intro 1.2s ease-out forwards 0.1s; }
         .scorebug-frame.visible .fx-shimmer { animation: shimmer-pass-on 1.5s ease-in-out forwards 0.6s; opacity: 1; }
+        .scorebug-frame.visible .fx-anamorphic-flare { animation: flare-expand-on 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s; }
         .scorebug-frame.visible .fx-flash { animation: flash-burst-on 0.6s ease-out forwards 0.1s; }
 
         .gel-effect { position: relative; overflow: hidden; }
@@ -279,8 +288,12 @@
 </head>
 <body>
     <div id="scorebug" class="scorebug-frame">
+        <div class="fx-layer fx-outline-light"></div>
+        <div class="fx-layer fx-noise"></div>
         <div class="fx-layer fx-shimmer"></div>
+        <div class="fx-layer fx-anamorphic-flare"></div>
         <div class="fx-layer fx-flash"></div>
+        <div class="fx-layer overall-sheen"></div>
         <div class="bottom-line-light"></div>
 
         <div class="back-logo-layer">
