@@ -833,9 +833,10 @@
             const newVal = scores[teamId];
             document.getElementById(`ctrlScore${teamId}`).innerText = newVal;
             if (oldVal !== newVal) animateScoreChange(teamId, oldVal, newVal);
+            broadcastState();
         }
 
-        function updateText(id, val) { document.getElementById(id).innerText = val; }
+        function updateText(id, val) { document.getElementById(id).innerText = val; broadcastState(); }
         function updateTeamColor(teamId, hex) {
             const box = document.getElementById(`team${teamId}Box`);
             const darken = (hex, amount) => {
@@ -857,10 +858,11 @@
             document.getElementById('inningNum').innerText = inningNum;
             document.getElementById('inningArrow').innerText = isTop ? "▲" : "▼";
             document.getElementById('inningDisplay').innerText = `${inningNum}회${isTop ? '초' : '말'}`;
-            if (prevStep !== inningStep) { setBSO('b', 0); setBSO('s', 0); setBSO('o', 0); clearBase(); }
+            if (prevStep !== inningStep) { setBSO('b', 0, true); setBSO('s', 0, true); setBSO('o', 0, true); clearBase(true); }
+            broadcastState();
         }
 
-        function setBSO(type, count) {
+        function setBSO(type, count, skipBroadcast) {
             bso[type] = count;
             for(let i=1; i<=3; i++) {
                 const dot = document.getElementById(`${type}${i}`);
@@ -876,6 +878,7 @@
                 const btn = document.getElementById(`btn-${type}${i}`);
                 if(btn) { if(i <= count) btn.classList.add('active'); else btn.classList.remove('active'); }
             }
+            if (!skipBroadcast) broadcastState();
         }
 
         function toggleBase(baseId) {
@@ -889,37 +892,43 @@
                 el.classList.remove('on');
                 btn.classList.remove('active');
             }
+            broadcastState();
         }
 
-        function clearBase() {
+        function clearBase(skipBroadcast) {
             for(let i=1; i<=3; i++) {
                 bases[i] = false;
                 document.getElementById(`base${i}`).classList.remove('on');
                 document.getElementById(`btnBase${i}`).classList.remove('active');
             }
+            if (!skipBroadcast) broadcastState();
         }
 
         function clearAll() {
-            setBSO('b', 0); setBSO('s', 0); setBSO('o', 0); clearBase();
+            setBSO('b', 0, true); setBSO('s', 0, true); setBSO('o', 0, true); clearBase(true);
             scores[1] = 0; scores[2] = 0;
             document.getElementById('ctrlScore1').innerText = 0; document.getElementById('ctrlScore2').innerText = 0;
             if(document.getElementById('score1')) animateScoreChange(1, document.getElementById('score1').innerText.trim(), 0);
             if(document.getElementById('score2')) animateScoreChange(2, document.getElementById('score2').innerText.trim(), 0);
             inningStep = 1;
             document.getElementById('inningNum').innerText = 1; document.getElementById('inningArrow').innerText = "▲"; document.getElementById('inningDisplay').innerText = "1회초";
+            broadcastState();
         }
 
         function playAnimation(type) {
             if (type === 'in') {
                 scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
-                void scorebug.offsetWidth; 
+                void scorebug.offsetWidth;
                 scorebug.classList.add('visible');
+                channel.postMessage({ action: 'on' });
+                broadcastState();
             } else {
                 scorebug.classList.add('seq-active'); scorebug.classList.add('seq-flip');
                 setTimeout(() => { scorebug.classList.add('seq-close'); }, 600);
                 setTimeout(() => {
                     scorebug.classList.add('seq-final-hide'); scorebug.classList.remove('visible');
                 }, 1000);
+                channel.postMessage({ action: 'off' });
             }
         }
 
