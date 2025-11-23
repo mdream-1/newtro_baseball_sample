@@ -198,8 +198,63 @@
     </div>
 
     <script>
-        // 데모: BSO 활성화 예시
-        // 실제 사용시 WebSocket이나 API로 데이터 수신
+        // === BroadcastChannel 실시간 수신 ===
+        const channel = new BroadcastChannel('scorebug_sync');
+
+        channel.onmessage = function(event) {
+            const data = event.data;
+
+            // 팀 이름 업데이트
+            document.getElementById('team1Name').innerText = data.team1Name;
+            document.getElementById('team2Name').innerText = data.team2Name;
+
+            // 점수 업데이트
+            document.getElementById('score1').innerText = data.score1;
+            document.getElementById('score2').innerText = data.score2;
+
+            // 대회명 업데이트
+            document.getElementById('gameTitle').innerText = data.gameTitle;
+
+            // 이닝 업데이트
+            const inningNum = Math.ceil(data.inningStep / 2);
+            const isTop = (data.inningStep % 2 !== 0);
+            document.getElementById('inningNum').innerText = inningNum;
+            document.getElementById('inningArrow').innerText = isTop ? '▲' : '▼';
+
+            // BSO 업데이트
+            updateBSO('b', data.bso.b, 3);
+            updateBSO('s', data.bso.s, 2);
+            updateBSO('o', data.bso.o, 2);
+
+            // 베이스 업데이트
+            updateBase(1, data.bases[1]);
+            updateBase(2, data.bases[2]);
+            updateBase(3, data.bases[3]);
+        };
+
+        function updateBSO(type, count, max) {
+            for (let i = 1; i <= max; i++) {
+                const dot = document.getElementById(type + i);
+                if (dot) {
+                    if (i <= count) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                }
+            }
+        }
+
+        function updateBase(baseId, isOn) {
+            const el = document.getElementById('base' + baseId);
+            if (el) {
+                if (isOn) {
+                    el.classList.add('on');
+                } else {
+                    el.classList.remove('on');
+                }
+            }
+        }
     </script>
 </body>
 </html>

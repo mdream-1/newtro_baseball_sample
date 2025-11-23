@@ -817,6 +817,65 @@
 
         setTimeout(() => playAnimation('in'), 500);
 
+        // === BroadcastChannel 실시간 연동 ===
+        const channel = new BroadcastChannel('scorebug_sync');
+
+        function broadcastState() {
+            channel.postMessage({
+                team1Name: document.getElementById('team1Name').innerText,
+                team2Name: document.getElementById('team2Name').innerText,
+                score1: scores[1],
+                score2: scores[2],
+                inningStep: inningStep,
+                bso: bso,
+                bases: bases,
+                gameTitle: document.getElementById('gameTitle').innerText
+            });
+        }
+
+        // 기존 함수들에 broadcast 호출 추가
+        const originalSetBSO = setBSO;
+        setBSO = function(type, count) {
+            originalSetBSO(type, count);
+            broadcastState();
+        };
+
+        const originalToggleBase = toggleBase;
+        toggleBase = function(baseId) {
+            originalToggleBase(baseId);
+            broadcastState();
+        };
+
+        const originalClearBase = clearBase;
+        clearBase = function() {
+            originalClearBase();
+            broadcastState();
+        };
+
+        const originalChangeScore = changeScore;
+        changeScore = function(teamId, delta) {
+            originalChangeScore(teamId, delta);
+            broadcastState();
+        };
+
+        const originalChangeInningStep = changeInningStep;
+        changeInningStep = function(delta) {
+            originalChangeInningStep(delta);
+            broadcastState();
+        };
+
+        const originalClearAll = clearAll;
+        clearAll = function() {
+            originalClearAll();
+            broadcastState();
+        };
+
+        const originalUpdateText = updateText;
+        updateText = function(id, val) {
+            originalUpdateText(id, val);
+            broadcastState();
+        };
+
         function copyCleanoutUrl() {
             const url = document.getElementById('cleanoutUrl').innerText;
             navigator.clipboard.writeText(url).then(() => {
