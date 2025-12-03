@@ -65,28 +65,17 @@
 
         /* [헤더 레이블] */
         .top-header-label {
-            width: 100%; padding: 16px 20px; background: #000; color: #666;
-            font-size: 24px; border-bottom: 1px solid #333;
-            display: flex; align-items: center; gap: 20px;
+            width: 100%; padding: 8px 20px; background: #000; color: #666;
+            font-size: 12px; border-bottom: 1px solid #333;
+            display: flex; align-items: center; gap: 10px;
             font-family: 'GmarketSansMedium', sans-serif;
             z-index: 100; flex-shrink: 0;
         }
         .header-highlight { color: #aaa; font-weight: bold; }
 
-        /* [클린아웃 URL 바] */
-        .cleanout-url-bar {
-            width: 100%; padding: 8px 20px; background: #1a1a1a;
-            border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px;
-            font-family: 'GmarketSansMedium', sans-serif; font-size: 13px; flex-shrink: 0;
-        }
-        .cleanout-url-bar .label { color: #888; }
-        .cleanout-url-bar .url { color: #4fc3f7; background: #000; padding: 4px 10px; border-radius: 4px; font-family: monospace; }
-        .cleanout-url-bar .copy-btn { background: #333; color: #ccc; border: 1px solid #555; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .cleanout-url-bar .copy-btn:hover { background: #444; }
-
         /* === [2. 레이아웃 구조] === */
         .monitor-area {
-            height: 20vh; min-height: 150px; width: 100%;
+            flex: 1; width: 100%; min-height: 300px;
             display: flex; align-items: center; justify-content: center;
             background-image: radial-gradient(circle at center, #222 0%, #000 100%);
             position: relative; overflow: hidden; border-bottom: 1px solid #333;
@@ -100,10 +89,9 @@
         }
 
         .control-area {
-            flex: 1; width: 100%; background: #1a1a1a;
+            height: 380px; width: 100%; background: #1a1a1a;
             border-top: 4px solid #a73b16;
             display: grid; 
-            /* [수정] 그리드 반응형 보완: 최소 너비 확보 */
             grid-template-columns: repeat(4, minmax(200px, 1fr)); 
             align-items: start;
             gap: 15px; padding: 20px; overflow-y: auto; color: #eee; flex-shrink: 0; 
@@ -111,15 +99,11 @@
 
         /* === [3. 바형 스코어보드 프레임] === */
         .scorebug-frame {
-            display: flex; flex-direction: row;
+            display: flex; flex-direction: row; 
             height: var(--bar-height);
-            border: 2px solid #222;
-            box-shadow:
-                0 0 0 1px #000,
-                inset 0 1px 0px rgba(255,255,255,0.45),
-                inset 0 -1px 0px rgba(0,0,0,0.7),
-                0 16px 48px rgba(0,0,0,0.9);
-            border-radius: 14px;
+            border: 2px solid #222; 
+            box-shadow: 0 0 0 1px #000, inset 0 1px 0px rgba(255,255,255,0.45), inset 0 -1px 0px rgba(0,0,0,0.7), 0 16px 48px rgba(0,0,0,0.9);
+            border-radius: 14px; 
             overflow: hidden; 
             background: 
                 radial-gradient(140% 120% at 0% 0%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 55%),
@@ -144,7 +128,6 @@
             z-index: 20;
             clip-path: inset(0 round 12px);
         }
-
         .scorebug-frame::after {
             content: ""; position: absolute; left: 12px; right: 12px; top: 8px; height: 3px;
             background: linear-gradient(90deg, rgba(0,200,255,0) 0%, rgba(0,200,255,0.6) 25%, rgba(255,255,255,0.9) 50%, rgba(0,200,255,0.6) 75%, rgba(0,200,255,0) 100%);
@@ -161,20 +144,26 @@
         .scorebug-frame.seq-close { clip-path: inset(0 0 0 0); opacity: 0; transition: opacity 0.4s ease-out; }
         .scorebug-frame.seq-final-hide { opacity: 0 !important; pointer-events: none; }
 
-        /* [하단 라인 라이트 효과] - 개선됨 */
+        /* [수정] 하단 라인 라이트 (강렬하게 변경 - 애니메이션용) */
         .bottom-line-light {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 4px;
-            background: #fff;
+            height: 4px; /* 두께 증가 */
+            background: #fff; /* 순백색 코어 */
             z-index: 100;
-            box-shadow: 0 0 10px rgba(0, 220, 255, 0.9), 0 0 20px rgba(0, 150, 255, 0.7), 0 -2px 8px rgba(255, 255, 255, 0.9);
-            opacity: 0;
-            transform: scaleX(0);
+            /* 강렬한 블루+화이트 글로우 효과 */
+            box-shadow: 
+                0 0 10px rgba(0, 220, 255, 0.9), 
+                0 0 20px rgba(0, 150, 255, 0.7),
+                0 -2px 8px rgba(255, 255, 255, 0.9);
+            opacity: 0; 
+            transform: scaleX(0); /* 중앙에서 퍼지도록 */
             transform-origin: center;
             pointer-events: none;
+            mix-blend-mode: screen;
         }
-
+        
+        /* 하단 라인 전용 애니메이션 정의 */
         @keyframes bottom-line-flash-anim {
             0% { opacity: 0; transform: scaleX(0); }
             10% { opacity: 1; transform: scaleX(0.2); }
@@ -182,6 +171,7 @@
             100% { opacity: 0; transform: scaleX(1); }
         }
 
+        /* ON AIR시 하단 라인 애니메이션 실행 (상시 유지가 아님) */
         .scorebug-frame.visible .bottom-line-light {
             animation: bottom-line-flash-anim 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
         }
@@ -214,22 +204,25 @@
         /* === [FX Layers] === */
         .fx-layer { position: absolute; inset: 0; pointer-events: none; z-index: 900; }
         .fx-noise { z-index: 55; mix-blend-mode: overlay; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
+        
         .fx-shimmer { z-index: 900; opacity: 0; top: 0; left: -150%; width: 150%; height: 100%; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.2) 50%, transparent 60%); transform: skewX(-20deg); filter: blur(3px); }
-        /* fx-anamorphic-flare 제거됨 - 가로선 효과 불필요 */
+        
+        /* [수정] 중앙 가로지르는 라인 라이트(flare) 제거됨 */
+        /* .fx-anamorphic-flare { ... } 제거 */
+
         .fx-flash { z-index: 999; mix-blend-mode: overlay; background: white; opacity: 0; }
-        .fx-outline-light { z-index: 850; opacity: 0; mix-blend-mode: screen; border-radius: 12px; }
+        .fx-outline-light { z-index: 850; opacity: 0; mix-blend-mode: screen; }
         .overall-sheen { z-index: 990; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.05) 60%); }
 
         @keyframes outline-flash-intro { 0% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } 15% { opacity: 1; box-shadow: inset 0 0 0 4px rgba(220, 255, 255, 1), 0 0 40px rgba(0, 220, 255, 0.8); border-color: rgba(255,255,255,1); } 100% { opacity: 0; box-shadow: inset 0 0 0 0 rgba(0, 200, 255, 0); border-color: rgba(0,200,255,0); } }
         @keyframes shimmer-pass-on { 0% { left: -150%; opacity: 0; } 10% { opacity: 1; } 100% { left: 200%; opacity: 0; } }
-        @keyframes flare-expand-on { 0% { width: 0%; opacity: 0; } 10% { opacity: 1; } 40% { width: 180%; opacity: 1; } 100% { width: 180%; opacity: 0; } }
         @keyframes flash-burst-on { 0% { opacity: 0; } 5% { opacity: 0.8; } 100% { opacity: 0; } }
         @keyframes mechanicFlipDown { 0% { transform: rotateX(0deg); filter: brightness(1); } 40% { filter: brightness(0.7); } 100% { transform: rotateX(90deg); filter: brightness(0.2); opacity: 0; } }
         @keyframes flip-mechanical { 0% { transform: rotateX(0deg); animation-timing-function: var(--ease-flap-fall); } 60% { transform: rotateX(-185deg); animation-timing-function: var(--ease-flap-bounce); } 80% { transform: rotateX(-178deg); } 100% { transform: rotateX(-180deg); } }
 
         .scorebug-frame.visible .fx-outline-light { animation: outline-flash-intro 1.2s ease-out forwards 0.1s; }
         .scorebug-frame.visible .fx-shimmer { animation: shimmer-pass-on 1.5s ease-in-out forwards 0.6s; opacity: 1; }
-        /* fx-anamorphic-flare 애니메이션 제거됨 */
+        /* .fx-anamorphic-flare 관련 애니메이션 제거됨 */
         .scorebug-frame.visible .fx-flash { animation: flash-burst-on 0.6s ease-out forwards 0.1s; }
 
         /* === [Bar Layout Components] === */
@@ -390,15 +383,20 @@
             line-height: 1; 
             gap: 2px; 
         }
-        /* [2. 수정] 스피드건 숫자 크기 확대 (36px -> 43px, 20% 증가) */
-        .speed-text {
-            font-family: var(--font-oswald);
-            font-weight: 700;
-            font-size: 43px;
-            color: #000;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+        /* [2. 수정] 스피드건 숫자 크기 확대 (26 -> 36px) */
+        .speed-text { 
+            font-family: var(--font-oswald); 
+            font-weight: 700; 
+            font-size: 36px; /* 1.4배 확대 */
+            color: #000; 
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4); 
         }
-        /* speed-unit 제거됨 - 숫자만 표시 */
+        .speed-unit { 
+            font-family: var(--font-oswald); 
+            font-size: 14px; 
+            color: #444; 
+            font-weight: 700; 
+        }
 
         /* Base Diamond */
         .field-diamond { 
@@ -531,16 +529,9 @@
 
     <!-- 최상단 라벨 -->
     <div class="top-header-label">
-        <span class="header-highlight">PDB오모 제작</span>
+        <span class="header-highlight">(주)미러드림 중계사업부 제작</span>
         <span style="color:#444">|</span>
-        <span>바형 야구 그래픽, 컨트롤 테스트</span>
-    </div>
-
-    <!-- 클린아웃 URL 바 -->
-    <div class="cleanout-url-bar">
-        <span class="label">클린아웃 URL:</span>
-        <span class="url" id="cleanoutUrl"></span>
-        <button class="copy-btn" onclick="copyCleanoutUrl()"><i class="fa-regular fa-copy"></i> 복사</button>
+        <span>Final V4 (Perfected)</span>
     </div>
 
     <!-- 상단: 모니터링 영역 -->
@@ -550,11 +541,14 @@
                 <div class="fx-layer fx-outline-light"></div>
                 <div class="fx-layer fx-noise"></div>
                 <div class="fx-layer fx-shimmer"></div>
-                <!-- fx-anamorphic-flare 제거됨 -->
+                
+                <!-- [수정] 중앙 가로지르는 플레어 제거 -->
+                <!-- <div class="fx-layer fx-anamorphic-flare"></div> -->
+                
                 <div class="fx-layer fx-flash"></div>
                 <div class="fx-layer overall-sheen"></div>
                 
-                <!-- [추가] 하단 라인 라이트 -->
+                <!-- [수정] 하단 라인 라이트 (강화됨) -->
                 <div class="bottom-line-light"></div>
 
                 <!-- Back Logo Logic -->
@@ -628,7 +622,8 @@
                         </div>
                         <div class="speed-content">
                             <div class="speed-text-group">
-                                <span class="speed-text" id="speedValue">154</span>
+                                <span class="speed-text" id="speedValue">154.2</span>
+                                <span class="speed-unit">km/h</span>
                             </div>
                         </div>
                     </div>
@@ -865,10 +860,9 @@
             const newVal = scores[teamId];
             document.getElementById(`ctrlScore${teamId}`).innerText = newVal;
             if (oldVal !== newVal) animateScoreChange(teamId, oldVal, newVal);
-            broadcastState();
         }
 
-        function updateText(id, val) { document.getElementById(id).innerText = val; broadcastState(); }
+        function updateText(id, val) { document.getElementById(id).innerText = val; }
         function updateTeamColor(teamId, hex) {
             const box = document.getElementById(`team${teamId}Box`);
             const darken = (hex, amount) => {
@@ -890,11 +884,10 @@
             document.getElementById('inningNum').innerText = inningNum;
             document.getElementById('inningArrow').innerText = isTop ? "▲" : "▼";
             document.getElementById('inningDisplay').innerText = `${inningNum}회${isTop ? '초' : '말'}`;
-            if (prevStep !== inningStep) { setBSO('b', 0, true); setBSO('s', 0, true); setBSO('o', 0, true); clearBase(true); }
-            broadcastState();
+            if (prevStep !== inningStep) { setBSO('b', 0); setBSO('s', 0); setBSO('o', 0); clearBase(); }
         }
 
-        function setBSO(type, count, skipBroadcast) {
+        function setBSO(type, count) {
             bso[type] = count;
             for(let i=1; i<=3; i++) {
                 const dot = document.getElementById(`${type}${i}`);
@@ -910,7 +903,6 @@
                 const btn = document.getElementById(`btn-${type}${i}`);
                 if(btn) { if(i <= count) btn.classList.add('active'); else btn.classList.remove('active'); }
             }
-            if (!skipBroadcast) broadcastState();
         }
 
         function toggleBase(baseId) {
@@ -924,43 +916,37 @@
                 el.classList.remove('on');
                 btn.classList.remove('active');
             }
-            broadcastState();
         }
 
-        function clearBase(skipBroadcast) {
+        function clearBase() {
             for(let i=1; i<=3; i++) {
                 bases[i] = false;
                 document.getElementById(`base${i}`).classList.remove('on');
                 document.getElementById(`btnBase${i}`).classList.remove('active');
             }
-            if (!skipBroadcast) broadcastState();
         }
 
         function clearAll() {
-            setBSO('b', 0, true); setBSO('s', 0, true); setBSO('o', 0, true); clearBase(true);
+            setBSO('b', 0); setBSO('s', 0); setBSO('o', 0); clearBase();
             scores[1] = 0; scores[2] = 0;
             document.getElementById('ctrlScore1').innerText = 0; document.getElementById('ctrlScore2').innerText = 0;
             if(document.getElementById('score1')) animateScoreChange(1, document.getElementById('score1').innerText.trim(), 0);
             if(document.getElementById('score2')) animateScoreChange(2, document.getElementById('score2').innerText.trim(), 0);
             inningStep = 1;
             document.getElementById('inningNum').innerText = 1; document.getElementById('inningArrow').innerText = "▲"; document.getElementById('inningDisplay').innerText = "1회초";
-            broadcastState();
         }
 
         function playAnimation(type) {
             if (type === 'in') {
                 scorebug.classList.remove('seq-active', 'seq-flip', 'seq-close', 'seq-final-hide');
-                void scorebug.offsetWidth;
+                void scorebug.offsetWidth; 
                 scorebug.classList.add('visible');
-                channel.postMessage({ action: 'on' });
-                broadcastState();
             } else {
                 scorebug.classList.add('seq-active'); scorebug.classList.add('seq-flip');
                 setTimeout(() => { scorebug.classList.add('seq-close'); }, 600);
                 setTimeout(() => {
                     scorebug.classList.add('seq-final-hide'); scorebug.classList.remove('visible');
                 }, 1000);
-                channel.postMessage({ action: 'off' });
             }
         }
 
@@ -981,33 +967,6 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
-        }
-
-        // 클린아웃 URL 설정
-        let cleanoutUrl = window.location.href;
-        cleanoutUrl = cleanoutUrl.replace(encodeURIComponent('기본개념_바형디자인.html'), 'cleanout_bar.html');
-        cleanoutUrl = cleanoutUrl.replace('기본개념_바형디자인.html', 'cleanout_bar.html');
-        document.getElementById('cleanoutUrl').textContent = cleanoutUrl;
-
-        function copyCleanoutUrl() {
-            navigator.clipboard.writeText(cleanoutUrl);
-            alert('클린아웃 URL이 복사되었습니다!');
-        }
-
-        // BroadcastChannel 동기화
-        const channel = new BroadcastChannel('scorebug_bar_sync');
-
-        function broadcastState() {
-            channel.postMessage({
-                team1Name: document.getElementById('team1Name').innerText,
-                team2Name: document.getElementById('team2Name').innerText,
-                score1: scores[1],
-                score2: scores[2],
-                gameTitle: document.getElementById('gameTitle').innerText,
-                inningStep: inningStep,
-                bso: bso,
-                bases: bases
-            });
         }
 
         setTimeout(() => playAnimation('in'), 500);
