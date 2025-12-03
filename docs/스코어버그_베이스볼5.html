@@ -150,13 +150,15 @@
         .speed-text { font-family: var(--font-oswald); font-weight: 700; font-size: 36px; color: #000; text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
         .speed-unit { font-family: var(--font-oswald); font-size: 14px; color: #444; font-weight: 700; }
         .field-diamond { position: relative; width: 48px; height: 48px; transform: rotate(45deg); top: 0px; margin-top: 18px; }
-        .base-led { position: absolute; width: 19px; height: 19px; background-color: #555; border: 2px solid #000; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.7); transition: all 0.2s; background-image: radial-gradient(rgba(0,0,0,0.5) 30%, transparent 30%); background-size: 4px 4px; }
-        .base-led::before { content: ""; position: absolute; inset: 0; border-radius: 2px; background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.8), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0)); mix-blend-mode: screen; pointer-events: none; }
-        .base-led::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 55%; background: linear-gradient(to bottom, rgba(255,255,255,0.55), transparent); }
+        .base-led { position: absolute; width: 19px; height: 19px; background-color: #2a2a2a; border: 2px solid #000; box-shadow: inset 0 2px 4px rgba(0,0,0,0.9), inset 0 -2px 4px rgba(255,255,255,0.05), 0 1px 2px rgba(0,0,0,0.6); transition: all 0.2s; background-image: radial-gradient(rgba(0,0,0,0.5) 30%, transparent 30%); background-size: 4px 4px; }
+        .base-led::before { content: ""; position: absolute; inset: 0; border-radius: 2px; background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.25), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0)); mix-blend-mode: screen; pointer-events: none; }
+        .base-led::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 55%; background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent); }
         .base-led.second { top: 0; left: 0; border-top-left-radius: 3px; }
         .base-led.first { top: 0; right: 0; border-top-right-radius: 3px; }
         .base-led.third { bottom: 0; left: 0; border-bottom-left-radius: 3px; }
         .base-led.on { background-color: var(--led-base); box-shadow: 0 0 10px var(--led-base); border-color: #000000; z-index: 10; }
+        .base-led.on::before { background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.7), rgba(255,255,255,0) 60%), linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0)); }
+        .base-led.on::after { background: linear-gradient(to bottom, rgba(255,255,255,0.55), transparent); }
 
         /* 라인 라이트 (하단) */
         .bottom-line-light {
